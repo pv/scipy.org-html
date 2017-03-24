@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>Building From Source on Windows &mdash; SciPy.org</title>
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/css/spc-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../_static/css/spc-extend.css">
+    <link rel="stylesheet" href="../../_static/scipy.css" type="text/css" >
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" >
+    <link rel="stylesheet" href="../../../../_static/scipy-org.css" type="text/css" >
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico">
+    <link rel="author" title="About these documents" href="../../about.html" >
+    <link rel="search" title="Search" href="../../search.html" >
+    <link rel="top" title="SciPy.org" href="../../index.html" >
+    <link rel="up" title="Building" href="index.html" >
+    <link rel="next" title="Building From Source on Mac OSX" href="macosx.html" >
+    <link rel="prev" title="Building From Source on Linux" href="linux.html" > 
+  </head>
+  <body>
+<style type="text/css">
+.top-logo-header {
+  text-align: left;
+  background-color: rgb(140, 170, 230);
+  border-bottom: 8px solid rgb(0, 51, 153);
+  margin-top: 10px;
+  padding: 5px;
+  box-shadow: 0px 0px 3px rgb(136, 136, 136);
+}
+</style>
+<div class="container">
+  <div class="top-logo-header">
+    <a href="../../index.html">
+      <img style="border: 0;" alt="SciPy" src="../../_static/logo.gif"></a>
+  </div>
+</div>
+
+    <div class="container">
+      <div class="main">
+
+
+        
+
+
+
+	<div class="row-fluid">
+          <div class="span9">
+            
+	      <div class="row-fluid">
+		<div class="span9">
+  		  <div class="spc-navbar">
+		    
+    <ul class="nav nav-pills pull-left">
+	
+        <li class="active"><a href="../../index.html">SciPy.org</a></li>
+	
+          <li class="active"><a href="../index.html" >SciPy library</a></li>
+          <li class="active"><a href="index.html" accesskey="U">Building</a></li> 
+    </ul>
+		  </div>
+		</div>
+	      </div>
+            
+        <div class="bodywrapper">
+          <div class="body" id="spc-section-body">
+            
+  <div class="section" id="building-from-source-on-windows">
+<h1>Building From Source on Windows<a class="headerlink" href="#building-from-source-on-windows" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#overview" id="id2">Overview</a></li>
+<li><a class="reference internal" href="#python-libraries" id="id3">Python Libraries</a></li>
+<li><a class="reference internal" href="#compilers" id="id4">Compilers</a><ul>
+<li><a class="reference internal" href="#mingw" id="id5">MinGW</a></li>
+<li><a class="reference internal" href="#cygwin" id="id6">Cygwin</a></li>
+<li><a class="reference internal" href="#microsoft-visual-c-msvc" id="id7">Microsoft Visual C++ (MSVC)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#libraries" id="id8">Libraries</a><ul>
+<li><a class="reference internal" href="#intel-math-kernel-library-mkl" id="id9">Intel Math Kernel Library (MKL)</a></li>
+<li><a class="reference internal" href="#atlas-and-lapack" id="id10">ATLAS and LAPACK</a></li>
+<li><a class="reference internal" href="#openblas-and-lapack" id="id11">OpenBLAS and LAPACK</a></li>
+<li><a class="reference internal" href="#blas-and-lapack" id="id12">BLAS and LAPACK</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#linking-libraries-to-numpy-and-scipy" id="id13">Linking Libraries to NumPy and SciPy</a></li>
+<li><a class="reference internal" href="#additional-resources" id="id14">Additional Resources</a></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Compared to OSX and Linux, building NumPy and SciPy on Windows is difficult,
+largely due to the lack of compatible, open-source libraries like <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a> or
+<a class="reference external" href="http://math-atlas.sourceforge.net/">ATLAS</a> that are necessary to build both libraries and have them perform
+relatively well. You can&#8217;t <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span></code> everything like you
+can on the other two platforms.</p>
+<p>Fortunately, a lot of work has been done recently to rectify this situation.
+Projects such as <a class="reference external" href="https://github.com/xianyi/OpenBLAS">OpenBLAS</a> and <a class="reference external" href="http://mingwpy.github.io/">Mingwpy</a> are under active development to develop
+open-source toolchains that would allow Windows users to build and develop with
+NumPy and SciPy from source without issues of financial, platform, or licensing constraints.</p>
+<p>This document will attempt to provide a general summary of the available options that
+users can currently avail themselves to if they so choose to build these libraries from
+source. However, in light of all the work currently being done, <strong>do not expect</strong>
+these instructions to be accurate in the long-run and be sure to check up on any of the
+open source projects mentioned for the most up-to-date information. For more information
+on all of these projects, the <a class="reference external" href="http://mingwpy.github.io/">Mingwpy</a> website is an <strong>excellent</strong> source of more in-depth
+information than this document will provide.</p>
+</div>
+<div class="section" id="python-libraries">
+<h2><a class="toc-backref" href="#id3">Python Libraries</a><a class="headerlink" href="#python-libraries" title="Permalink to this headline">¶</a></h2>
+<p>For development purposes, you will need several Python libraries when building NumPy and
+SciPy. These can be installed by running the command <code class="docutils literal"><span class="pre">(sudo)</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">{library}</span></code>.
+The libraries needed are:</p>
+<ol class="arabic simple">
+<li><strong>Cython</strong> (compiling <code class="docutils literal"><span class="pre">.pyx</span></code> files)</li>
+<li><strong>Nose</strong> (running unit tests)</li>
+<li><strong>Tempita</strong> (SciPy only)</li>
+</ol>
+</div>
+<div class="section" id="compilers">
+<h2><a class="toc-backref" href="#id4">Compilers</a><a class="headerlink" href="#compilers" title="Permalink to this headline">¶</a></h2>
+<p>In order to build NumPy and SciPy, two compilers are needed: a C compiler
+and a Fortran compiler. The latter is technically not necessary for NumPy,
+but it is <strong>strongly encouraged</strong> to have one in order to build libraries like
+<a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a> or <a class="reference external" href="http://math-atlas.sourceforge.net/">ATLAS</a> that will significantly improve performance. For the remainder
+of this document, given the performance differences, <strong>NumPy will be treated as if
+it actually does require such libraries, hence necessitating a Fortran compiler.</strong></p>
+<div class="section" id="mingw">
+<h3><a class="toc-backref" href="#id5">MinGW</a><a class="headerlink" href="#mingw" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="http://mingw-w64.org/doku.php/">Mingw-w64</a> project provides Windows versions of the free GNU compilers <strong>gcc</strong> and
+<strong>gfortran</strong>. These are the compilers most NumPy and SciPy developers work with and hence
+are the best supported by build scripts in both libraries. Also, as indicated in the name,
+they form the basis of the ongoing <a class="reference external" href="http://mingwpy.github.io/">Mingwpy</a> project mentioned previously. Thus, from a
+long-term perspective, these compilers may be the optimal ones to use. Installation
+instructions can be found <a class="reference external" href="http://mingw-w64.org/doku.php/download">here</a>.</p>
+</div>
+<div class="section" id="cygwin">
+<h3><a class="toc-backref" href="#id6">Cygwin</a><a class="headerlink" href="#cygwin" title="Permalink to this headline">¶</a></h3>
+<p>A POSIX-compatible, Linux-like environment for Windows, <a class="reference external" href="http://www.cygwin.com/">Cygwin</a> is a very useful tool,
+as it allows compilation and use of many Unix tools without modification. It can also be
+used to build libraries like <a class="reference external" href="http://math-atlas.sourceforge.net/">ATLAS</a>, which at the moment is very Unix-oriented, although
+that may be subject to change as we will discuss later on. Installation instructions
+for <a class="reference external" href="http://www.cygwin.com/">Cygwin</a> can be found <a class="reference external" href="https://cygwin.com/install.html">here</a>. When using the
+installer (either 32-bit or 64-bit depending on your computer), <strong>make sure to search
+for and select</strong> packages with the keyword <strong>gcc</strong> in them. <strong>Note that if you use Cygwin&#8217;s
+gcc, anything built with it can only run in a Cygwin environment and not in your native
+Windows environment.</strong></p>
+<p>In addition, Cygwin also offers its own <strong>identical</strong> packages for <a class="reference external" href="http://mingw-w64.org/doku.php/">Mingw-w64</a> that you can
+install by searching for <strong>mingw64</strong> in the packages list and then selecting those that contain
+<strong>i686</strong> if you&#8217;re using 32-bit or <strong>x86_64</strong> if you&#8217;re using 64-bit. If you choose this option,
+<strong>there is no need to have a separate installation of Mingw-w64.</strong> This is because anything built
+with <a class="reference external" href="http://mingw-w64.org/doku.php/">Mingw-w64</a> will be cross-platform compatible, so the build will work in your native Windows
+environment as well.</p>
+<p>Finally, the installer may also miss several important DLL&#8217;s necessary for proper function as
+pointed out <a class="reference external" href="http://stackoverflow.com/questions/32897685/cannot-compile-anything-with-gcc-on-cygwin32-missing-cygisl-10-dll">here</a>,
+so double check that you have them marked during installation. Rest assured that even if you forget to
+install a package, you can always run the installer again to install additional ones.</p>
+</div>
+<div class="section" id="microsoft-visual-c-msvc">
+<h3><a class="toc-backref" href="#id7">Microsoft Visual C++ (MSVC)</a><a class="headerlink" href="#microsoft-visual-c-msvc" title="Permalink to this headline">¶</a></h3>
+<p>NumPy and SciPy both support MSVC and its C/C++ compiler extension modules for the official
+binary distribution of Python. However, make sure that you download the correct version!
+For example, Python 2.7.x is compiled with Visual Studio 2008, and Python 3.5.1 is compiled
+with Visual Studio 2015. If you are using Python 2.7.x, you can also visit this link <a class="reference external" href="https://www.microsoft.com/en-gb/download/details.aspx?id=44266">here</a>
+to download the <strong>Microsoft Visual C++ Compiler for Python 2.7</strong>. If you are using Python 3.4.x and Windows 7, you
+should visit this link <a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=8279">here</a> and download the
+<strong>Microsoft Windows SDK for Windows 7</strong>. If you are using Python 3.5.x, you should obtain the compiler via their <a class="reference external" href="https://www.visualstudio.com/">Visual Studio</a>
+offering and download the <strong>Community Edition</strong>. If none of these configurations match your own, you will need to
+use one of the other build options described above. Please be aware that this option does does not come with a Fortran compiler,
+only a C/C++ compiler, and the only one currently known to be compatible with this compiler is the <strong>Intel Fortran compiler
+(ifort)</strong>, which itself is difficult to obtain as will be explained in the discussion about the <a class="reference internal" href="#mkl-library"><span class="std std-ref">Intel Math Kernel Library (MKL)</span></a>.</p>
+</div>
+</div>
+<div class="section" id="libraries">
+<h2><a class="toc-backref" href="#id8">Libraries</a><a class="headerlink" href="#libraries" title="Permalink to this headline">¶</a></h2>
+<p>As mentioned in the overview, certain libraries (math libraries to be specific) are necessary
+for a high performing NumPy and for building SciPy, and they are <a class="reference external" href="http://www.netlib.org/blas/">BLAS</a> and <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a>. There are
+many options available, in particular for <a class="reference external" href="http://www.netlib.org/blas/">BLAS</a>, and we will discuss several of the options below.</p>
+<div class="section" id="intel-math-kernel-library-mkl">
+<span id="mkl-library"></span><h3><a class="toc-backref" href="#id9">Intel Math Kernel Library (MKL)</a><a class="headerlink" href="#intel-math-kernel-library-mkl" title="Permalink to this headline">¶</a></h3>
+<p>Intel has provided its own implementations of <a class="reference external" href="http://www.netlib.org/blas/">BLAS</a> and <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a>, and they are by far some
+of the best performing libraries for <strong>both</strong> NumPy and SciPy. Unfortunately, they are not free and
+also require their own Fortran compiler for these libraries to work. While it is possible to obtain
+the libraries for free via their Community License (you can click <a class="reference external" href="https://software.intel.com/sites/campaigns/nest/">here</a>
+to learn more and click <a class="reference external" href="https://registrationcenter.intel.com/en/forms/?productid=2558&amp;licensetype=2">here</a> to register),
+it does not come with the Fortran compiler, <strong>ifort</strong>, which is necessary for building both the NumPy and SciPy libraries with MKL.</p>
+<p>To obtain this compiler, it is necessary to download their <strong>Intel Parallel Studio XE</strong> product,
+which can be trialed for 30 days, but it is currently unknown what will happen to the library and header
+files on your hard drive after that period has expired. To download, visit this page <a class="reference external" href="https://software.intel.com/en-us/fortran-compilers">here</a>
+for more information. Note, if you are a <strong>student</strong> or <strong>educator</strong>, this option is very appealing because
+Intel&#8217;s academic license will provide you everything that you need <strong>free of charge</strong>. To register, visit
+this page <a class="reference external" href="https://software.intel.com/en-us/qualify-for-free-software">here</a> and choose the appropriate
+option corresponding to your current academic situations. Afterwards, click the link corresponding to
+<strong>Intel Parallel Studio XE</strong> and download. Note that this installation will require that you have the most
+up-to-date version of <a class="reference external" href="https://www.visualstudio.com/">Visual Studio</a>.</p>
+<p>Finally, a brief note regarding C/C++ compilers: the <strong>Intel Parallel Studio XE</strong> software package will come with
+its own C/C++ compiler (<strong>icc</strong>), which will work perfectly fine when building the libraries. However, the C/C++ compiler
+from MSVC (<strong>cl</strong>) should work just fine as well.</p>
+</div>
+<div class="section" id="atlas-and-lapack">
+<h3><a class="toc-backref" href="#id10">ATLAS and LAPACK</a><a class="headerlink" href="#atlas-and-lapack" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://math-atlas.sourceforge.net/">ATLAS</a> is an optimized version of BLAS that is considered to be &#8220;portably efficient&#8221; according to its website. If you
+want to use this library, the easiest is to use this library in combination with <a class="reference external" href="http://mingw-w64.org/doku.php/">Mingw-w64</a>. Precompiled libraries using
+this toolchain can be found <a class="reference external" href="https://github.com/matthew-brett/np-wheel-builder/tree/master/atlas-builds">here</a> in the
+folder corresponding to your architecture (32-bit or 64-bit). While this setup has been shown to build NumPy successfully,
+it is not known yet whether it can build SciPy.</p>
+<p>If you are so inclined to build <a class="reference external" href="http://math-atlas.sourceforge.net/">ATLAS</a> by hand, you <strong>must</strong> use Cygwin to build it because the library was explicitly
+designed for Unix environments. However, you can compile the library with either the native <strong>gcc</strong> tools or the <strong>mingww-64</strong>
+tool package that you downloaded with <a class="reference external" href="http://www.cygwin.com/">Cygwin</a>. Installations scripts can be found in the same location <a class="reference external" href="https://github.com/matthew-brett/np-wheel-builder/tree/master/atlas-builds">here</a>.
+In the folder corresponding to your architecture, search for an <strong>install_atlas</strong> script, download the appropriate ZIP files
+<a class="reference external" href="http://nipy.bic.berkeley.edu/scipy_installers/atlas_builds/">here</a>, fill in some of the variables with appropriate
+values corresponding to your directory structure (e.g. the <strong>code_home</strong> variable) and then run script. <strong>Be forewarned
+though that this will take a very long time (around eight hours) to install</strong>.</p>
+<p>Finally, it should be noted that <a class="reference external" href="http://math-atlas.sourceforge.net/">ATLAS</a>, although open source, is not well optimized for Windows given its intended
+operating system environment. Thus, if performance is of the utmost importance, <a class="reference external" href="http://math-atlas.sourceforge.net/">ATLAS</a> may not be the best choice of
+libraries for building from source.</p>
+</div>
+<div class="section" id="openblas-and-lapack">
+<h3><a class="toc-backref" href="#id11">OpenBLAS and LAPACK</a><a class="headerlink" href="#openblas-and-lapack" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://github.com/xianyi/OpenBLAS">OpenBLAS</a> is an optimized version of BLAS that is currently used in languages like <a class="reference external" href="https://github.com/JuliaLang/julia">Julia</a> by default. Besides being
+actively worked upon, it performs about as well as the Intel libraries discussed previously. Furthermore, it is
+quite easy to install using <a class="reference external" href="http://www.cygwin.com/">Cygwin</a>. Just search for <strong>openblas</strong> and <strong>lapack</strong> in the packages that you are downloading,
+and they will be automatically installed into your <strong>usr/lib</strong> directory, which is where NumPy and SciPy will search
+for libraries if no configuration file is provided. <strong>Please note that if you choose this route, you must use Cygwin&#8217;s
+Python for this setup to work.</strong> During installation, just search for <strong>python</strong> in the packages and download the
+appropriate interpreter. However, if you are so inclined to build <a class="reference external" href="https://github.com/xianyi/OpenBLAS">OpenBLAS</a> by hand or want to build the library in your
+native Windows environment, installation instructions can be found on the <a class="reference external" href="https://github.com/xianyi/OpenBLAS">OpenBLAS</a> wiki page <a class="reference external" href="https://github.com/xianyi/OpenBLAS/wiki/Installation-Guide">here</a>.</p>
+</div>
+<div class="section" id="blas-and-lapack">
+<h3><a class="toc-backref" href="#id12">BLAS and LAPACK</a><a class="headerlink" href="#blas-and-lapack" title="Permalink to this headline">¶</a></h3>
+<p>Up to this point, we have been discussing optimized versions of <a class="reference external" href="http://www.netlib.org/blas/">BLAS</a> coupled with <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a>. It goes without saying then
+that it must be possible to build NumPy and SciPy with an unoptimized (and therefore lower-performant) <a class="reference external" href="http://www.netlib.org/blas/">BLAS</a> library.
+Pre-built libraries are readily available <a class="reference external" href="https://icl.cs.utk.edu/lapack-for-windows/lapack/">here</a>, though <strong>be sure to check the environment in which the libraries</strong> were
+built. Otherwise, NumPy and SciPy will not build. However, if none of the environments match your own environment, the
+libraries themselves can be downloaded as ZIP files by searching for a &#8220;download&#8221; section on the <a class="reference external" href="http://www.netlib.org/blas/">BLAS</a> and <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a> webpages.
+Rough installation instructions can be found <a class="reference external" href="http://ab-initio.mit.edu/wiki/index.php/Template:Installing_BLAS_and_LAPACK">here</a> for
+<a class="reference external" href="http://www.netlib.org/blas/">BLAS</a> and on the <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a> homepage for <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a>. While these instructions are for Linux, you should be able to follow these
+instructions fairly well if you have either <a class="reference external" href="http://www.cygwin.com/">Cygwin</a> or <a class="reference external" href="http://mingw-w64.org/doku.php/">Mingw-w64</a> installed on your computer.</p>
+</div>
+</div>
+<div class="section" id="linking-libraries-to-numpy-and-scipy">
+<h2><a class="toc-backref" href="#id13">Linking Libraries to NumPy and SciPy</a><a class="headerlink" href="#linking-libraries-to-numpy-and-scipy" title="Permalink to this headline">¶</a></h2>
+<p>Now that you have obtained the libraries that you want to use to build NumPy and SciPy, it is now necessary to link
+those libraries to NumPy and SciPy so that they will be used during the building process. There are two ways to do this.
+First, you can store them in the &#8220;standard&#8221; locations, which correspond either to the <code class="docutils literal"><span class="pre">Lib</span></code> directory of your Python
+installation or one of your <code class="docutils literal"><span class="pre">lib</span></code> directories (e.g. <code class="docutils literal"><span class="pre">/usr/lib</span></code>) if you are using <a class="reference external" href="http://www.cygwin.com/">Cygwin</a>. To determine the &#8220;standard&#8221;
+locations on your computer, navigate to the top-most level of your NumPy or SciPy directory and run <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">config</span></code>,
+and the output will show you where Python is searching for libraries.</p>
+<p>The other option is to create a configuration file, either called <code class="docutils literal"><span class="pre">site.cfg</span></code> or <code class="docutils literal"><span class="pre">.numpy-site.cfg</span></code>. If you are building
+both NumPy and SciPy, you should store it in your <code class="docutils literal"><span class="pre">C:\Users\{username}</span></code> directory of your native Windows environment or
+your <code class="docutils literal"><span class="pre">$HOME</span></code> or <code class="docutils literal"><span class="pre">~</span></code> directory if you are using <a class="reference external" href="http://www.cygwin.com/">Cygwin</a>. If you are just building NumPy, you can store it in the
+same directory as the topmost <code class="docutils literal"><span class="pre">setup.py</span></code> file. Before filling it in, make sure that your configuration file can be detected by
+filling it with some invalid text (e.g. &#8220;asdf&#8221;) and then run <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">config</span></code> again. An exception should be thrown
+because Python won&#8217;t be able to parse your configuration file.</p>
+<p>Depending on which library you use, the exact specifics of the configuration file will vary. The <code class="docutils literal"><span class="pre">site.cfg.example</span></code>
+file, which should be located at the top of your NumPy installation, provides an excellent guide for how to fill in
+your configuration file given the libraries you are using. If you do not have such a file, you can find it online <a class="reference external" href="https://github.com/numpy/numpy/blob/master/site.cfg.example">here</a>.</p>
+</div>
+<div class="section" id="additional-resources">
+<h2><a class="toc-backref" href="#id14">Additional Resources</a><a class="headerlink" href="#additional-resources" title="Permalink to this headline">¶</a></h2>
+<p>As discussed in the overview, this document is not meant to provide extremely detailed explanations on how to build
+NumPy and SciPy on Windows. This is largely because there is no one clearly superior way to do so at this point in time,
+and because the process for building these libraries on Windows is under active development, it is probable that any
+information will go out of date relatively soon. If you wish to receive more assistance, please reach out to the NumPy
+and SciPy mailing lists, which can be found <a class="reference external" href="http://www.scipy.org/scipylib/mailing-lists.html">here</a>.  There are many
+developers out there working on this issue right now, and they would certainly be happy to help you out!  Google is also
+a good resource, as there are many people out there who use NumPy and SciPy on Windows, so it would not be surprising if
+your question or problem has already been addressed.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+          </div>
+      <div class="spc-rightsidebar span3">
+        <div class="sphinxsidebarwrapper">
+
+<style type="text/css">
+a.extlink:after {
+    margin-left: 5px;
+    content: url("../../_static/external-link.png");
+}
+</style>
+
+
+
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">SciPy library:</li>
+    <li >
+      <a href="../index.html">SciPy (library)</a>
+    </li>
+    <li >
+      <a href="../license.html">License</a></li>
+    <li >
+      <a href="../download.html">Download</a></li>
+    <li><a class="extlink" href="http://docs.scipy.org/doc/">Documentation</a> 
+    <li >
+      <a href="index.html">Build instructions</a>
+      <ul class="nav nav-list">
+	<li >
+	  <a href="linux.html">Linux</a></li>
+	<li class="active">
+	  <a href="#">Windows</a></li>
+	<li >
+	  <a href="macosx.html">Mac OSX</a></li>
+      </ul>
+      
+    </li>
+    <li >
+      <a href="../mailing-lists.html">Mailing Lists</a></li>
+    <li >
+      <a href="../bug-report.html">Report Bugs</a></li>
+    <li >
+      <a href="../dev-zone.html">Developer Zone</a></li>
+    <li >
+      <a href="../donations.html">Donations</a></li>
+    <li >
+      <a href="../faq.html">FAQ</a></li>
+  </ul>
+</div>
+
+
+
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Building From Source on Windows</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#python-libraries">Python Libraries</a></li>
+<li><a class="reference internal" href="#compilers">Compilers</a><ul>
+<li><a class="reference internal" href="#mingw">MinGW</a></li>
+<li><a class="reference internal" href="#cygwin">Cygwin</a></li>
+<li><a class="reference internal" href="#microsoft-visual-c-msvc">Microsoft Visual C++ (MSVC)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#libraries">Libraries</a><ul>
+<li><a class="reference internal" href="#intel-math-kernel-library-mkl">Intel Math Kernel Library (MKL)</a></li>
+<li><a class="reference internal" href="#atlas-and-lapack">ATLAS and LAPACK</a></li>
+<li><a class="reference internal" href="#openblas-and-lapack">OpenBLAS and LAPACK</a></li>
+<li><a class="reference internal" href="#blas-and-lapack">BLAS and LAPACK</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#linking-libraries-to-numpy-and-scipy">Linking Libraries to NumPy and SciPy</a></li>
+<li><a class="reference internal" href="#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+<h3>Search</h3>
+<form class="form-search" action="http://www.google.com/search" method="get">
+  <fieldset>
+    <!-- we'll use google at least until we get everything in sphinx -->
+    <input type="text" name="q" size="18" class="input-small search-query">
+    <button type="submit" class="btn">Go</button>
+    <input type="hidden" name="as_sitesearch" value="scipy.org">
+  </fieldset>
+</form>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container container-navbar-bottom">
+      <div class="spc-navbar">
+        
+      </div>
+    </div>
+    <div class="container">
+    <div class="footer">
+    <div class="row-fluid">
+    <ul class="inline pull-left">
+      <li>
+        &copy; Copyright 2017 SciPy developers.
+      </li>
+      <li>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.3.
+      </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>Building From Source on Linux &mdash; SciPy.org</title>
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/css/spc-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../_static/css/spc-extend.css">
+    <link rel="stylesheet" href="../../_static/scipy.css" type="text/css" >
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" >
+    <link rel="stylesheet" href="../../../../_static/scipy-org.css" type="text/css" >
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico">
+    <link rel="author" title="About these documents" href="../../about.html" >
+    <link rel="search" title="Search" href="../../search.html" >
+    <link rel="top" title="SciPy.org" href="../../index.html" >
+    <link rel="up" title="Building" href="index.html" >
+    <link rel="next" title="Building From Source on Windows" href="windows.html" >
+    <link rel="prev" title="Building" href="index.html" > 
+  </head>
+  <body>
+<style type="text/css">
+.top-logo-header {
+  text-align: left;
+  background-color: rgb(140, 170, 230);
+  border-bottom: 8px solid rgb(0, 51, 153);
+  margin-top: 10px;
+  padding: 5px;
+  box-shadow: 0px 0px 3px rgb(136, 136, 136);
+}
+</style>
+<div class="container">
+  <div class="top-logo-header">
+    <a href="../../index.html">
+      <img style="border: 0;" alt="SciPy" src="../../_static/logo.gif"></a>
+  </div>
+</div>
+
+    <div class="container">
+      <div class="main">
+
+
+        
+
+
+
+	<div class="row-fluid">
+          <div class="span9">
+            
+	      <div class="row-fluid">
+		<div class="span9">
+  		  <div class="spc-navbar">
+		    
+    <ul class="nav nav-pills pull-left">
+	
+        <li class="active"><a href="../../index.html">SciPy.org</a></li>
+	
+          <li class="active"><a href="../index.html" >SciPy library</a></li>
+          <li class="active"><a href="index.html" accesskey="U">Building</a></li> 
+    </ul>
+		  </div>
+		</div>
+	      </div>
+            
+        <div class="bodywrapper">
+          <div class="body" id="spc-section-body">
+            
+  <div class="section" id="building-from-source-on-linux">
+<h1>Building From Source on Linux<a class="headerlink" href="#building-from-source-on-linux" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>On Linux, SciPy and NumPy libraries&#8217; official releases are source-code only. Installing NumPy and SciPy from source is reasonably easy; However, both packages depend on other software, some of them which can be challenging to install, or shipped with incompatibilities by major Linux distributions. Hopefully, you can install NumPy and SciPy without any software outside the necessary tools to build python extensions, as most dependencies are optional.</li>
+<li>Most major Linux distributions now ship NumPy and SciPy and, those binary packages are now reasonably reliable to use. Many other binary options are also available, ranging from individually made packages by some scipy developers for a specific Linux version, to whole commercially-supported scientific distributions. However, keep in mind that if you want to use the last improvements done to NumPy and SciPy on Linux, you have to build it from sources.</li>
+</ul>
+<div class="section" id="generic-instructions">
+<h2>Generic instructions<a class="headerlink" href="#generic-instructions" title="Permalink to this headline">¶</a></h2>
+<p>To build NumPy/SciPy from source, get the <a class="reference internal" href="../download.html"><span class="doc">source package</span></a>, unpack it, and:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span>   <span class="c1"># installs to your home directory -- requires Python &gt;= 2.6</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>python setup.py build
+python setup.py install --prefix=$HOME/local
+</pre></div>
+</div>
+<p>Before building, you will also need to install packages that NumPy and SciPy depend on</p>
+<ul class="simple">
+<li>BLAS and LAPACK libraries (optional but strongly recommended for NumPy, required for SciPy): typically <a class="reference external" href="http://math-atlas.sourceforge.net/">ATLAS</a> + <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a>, or <a class="reference external" href="https://software.intel.com/en-us/intel-mkl">MKL</a>, or <a class="reference external" href="http://developer.amd.com/tools-and-sdks/archive/amd-core-math-library-acml/">ACML</a></li>
+<li>C and Fortran compilers (typically <code class="docutils literal"><span class="pre">gcc</span></code> and <code class="docutils literal"><span class="pre">gfortran</span></code>).</li>
+<li>Python header files (typically a package named <code class="docutils literal"><span class="pre">python-dev</span></code> or <code class="docutils literal"><span class="pre">python-devel</span></code>)</li>
+<li>Unless you are building from released source packages, the <a class="reference external" href="http://cython.org/">Cython</a> compiler is necessary (typically in a
+package named <code class="docutils literal"><span class="pre">cython</span></code>). For building recent SciPy, it is possible
+that you need Cython in a newer version than is available in your
+distribution.</li>
+</ul>
+<p>Typically, you will want to install all of the above from packages supplied by your Linux distribution, as building them yourself is complicated. If you need to use specific BLAS/LAPACK libraries, you can do</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">BLAS</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">libblas</span><span class="o">.</span><span class="n">so</span>
+<span class="n">export</span> <span class="n">LAPACK</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">liblapack</span><span class="o">.</span><span class="n">so</span>
+<span class="n">export</span> <span class="n">ATLAS</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">libatlas</span><span class="o">.</span><span class="n">so</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="o">............</span>
+</pre></div>
+</div>
+<p>If you don&#8217;t want to any LAPACK, just do &#8220;<code class="docutils literal"><span class="pre">export</span> <span class="pre">LAPACK=</span></code>&#8221;.</p>
+<p>You will find below additional installation instructions and advice for many major Linux distributions.</p>
+</div>
+<div class="section" id="specific-instructions">
+<h2>Specific instructions<a class="headerlink" href="#specific-instructions" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#fedora-core-8-opensuse-10-2-rhel-centos-5" id="id3">Fedora Core 8, openSUSE 10.2, RHEL/Centos 5</a><ul>
+<li><a class="reference internal" href="#basic-install" id="id4">Basic install</a></li>
+<li><a class="reference internal" href="#building-atlas" id="id5">Building ATLAS</a><ul>
+<li><a class="reference internal" href="#building-atlas-by-hand" id="id6">Building ATLAS by Hand</a></li>
+<li><a class="reference internal" href="#building-atlas-with-atlas-xxx-src-rpm-from-ashigabou-repository" id="id7">Building ATLAS with atlas-XXX.src.rpm from Ashigabou Repository</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mandriva-2007-1" id="id8">Mandriva 2007.1</a></li>
+<li><a class="reference internal" href="#gentoo" id="id9">Gentoo</a></li>
+<li><a class="reference internal" href="#debian-ubuntu" id="id10">Debian / Ubuntu</a><ul>
+<li><a class="reference internal" href="#installation-from-source" id="id11">Installation from source:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#opensuse" id="id12">openSUSE</a><ul>
+<li><a class="reference internal" href="#atlas" id="id13">ATLAS</a></li>
+<li><a class="reference internal" href="#broken-blas" id="id14">Broken BLAS</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-everything-from-source-with-gfortran-on-ubuntu-nov-2010" id="id15">Building everything from source with gfortran on Ubuntu (Nov 2010)</a><ul>
+<li><a class="reference internal" href="#install-required-packages" id="id16">Install required packages</a></li>
+<li><a class="reference internal" href="#step-1-disable-cpu-throttling" id="id17">Step 1: Disable CPU Throttling</a></li>
+<li><a class="reference internal" href="#step-2-build-atlas-3-9-32-with-complete-lapack-3-2-2" id="id18">Step 2: Build ATLAS(3.9.32) with complete Lapack(3.2.2)</a></li>
+<li><a class="reference internal" href="#step-3-build-umfpack-5-5-0-with-amd-2-2-1-ufconfig-3-5-0-and-cholmod-1-7-1" id="id19">Step 3: Build UMFPACK (5.5.0) with AMD (2.2.1), UFConfig(3.5.0) and CHOLMOD (1.7.1)</a></li>
+<li><a class="reference internal" href="#step-4-build-numpy-1-5-0" id="id20">Step 4: Build numpy(1.5.0)</a></li>
+<li><a class="reference internal" href="#step-5-build-scipy-0-8-0" id="id21">Step 5: Build scipy(0.8.0)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-everything-from-source-with-gfortran-on-ubuntu-feb-2008" id="id22">Building everything from source with gfortran on Ubuntu (Feb 2008)</a><ul>
+<li><a class="reference internal" href="#id1" id="id23">Install required packages</a></li>
+<li><a class="reference internal" href="#build-lapack-3-1-1" id="id24">Build lapack (3.1.1)</a></li>
+<li><a class="reference internal" href="#build-atlas-3-8-0" id="id25">Build ATLAS (3.8.0)</a></li>
+<li><a class="reference internal" href="#build-umfpack-5-2-0" id="id26">Build UMFPACK (5.2.0)</a></li>
+<li><a class="reference internal" href="#build-fftw-3-1-2" id="id27">Build FFTW (3.1.2)</a><ul>
+<li><a class="reference internal" href="#scipy-versions-0-7-and-numpy-1-2" id="id28">SciPy Versions &gt;= 0.7 and NumPy &gt;= 1.2</a></li>
+<li><a class="reference internal" href="#id2" id="id29">SciPy Versions &lt; 0.7 and NumPy &lt; 1.2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#build-numpy-and-scipy" id="id30">Build NumPy and SciPy</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#any-distribution-with-intel-c-compiler-and-mkl" id="id31">Any distribution with Intel C compiler and MKL</a><ul>
+<li><a class="reference internal" href="#intel-mkl-11-0-updated-dec-2012" id="id32">Intel MKL 11.0 (updated Dec 2012)</a></li>
+<li><a class="reference internal" href="#intel-mkl-10-0" id="id33">Intel MKL 10.0</a></li>
+<li><a class="reference internal" href="#older-information" id="id34">Older information</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#any-linux-distro-self-contained-local-installation-with-sage" id="id35">Any Linux distro: self-contained local installation with Sage.</a></li>
+</ul>
+</div>
+<div class="section" id="fedora-core-8-opensuse-10-2-rhel-centos-5">
+<h3><a class="toc-backref" href="#id3">Fedora Core 8, openSUSE 10.2, RHEL/Centos 5</a><a class="headerlink" href="#fedora-core-8-opensuse-10-2-rhel-centos-5" title="Permalink to this headline">¶</a></h3>
+<p>D.C. has packaged the last released of numpy, scipy as well as lapack and blas dependencies for Fedora Core 8, opensuse 10.2 and Centos/RHEL 5 and a few others thanks to the opensuse build service. I strongly advise you to use those packages instead of the &#8220;official&#8221; ones, which are often unusable. The repository is there:</p>
+<p><a class="reference external" href="https://build.opensuse.org/project/show/home:ashigabou">https://build.opensuse.org/project/show/home:ashigabou</a></p>
+<div class="section" id="basic-install">
+<h4><a class="toc-backref" href="#id4">Basic install</a><a class="headerlink" href="#basic-install" title="Permalink to this headline">¶</a></h4>
+<p>To use this repository with yum, simply pick up your arch/distribution from <a class="reference external" href="http://download.opensuse.org/repositories/science:/ScientificLinux/">http://download.opensuse.org/repositories/science:/ScientificLinux/</a> , and take the corresponding .repo file. Put this .repo file into /etc/yum.repo.d/, and then install numpy/scipy with yum:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">numpy</span> <span class="n">python</span><span class="o">-</span><span class="n">scipy</span>
+</pre></div>
+</div>
+<p>I also packaged timers and testers for blas and lapack, which can be useful if you intend to compile special optimized versions of BLAS/LAPACK (eg GOTO or ATLAS). You can also find the package lapack3-pic, which can be used to build a complete LAPACK with ATLAS: it is a static version, but  as it is built with the -fPIC compiler flag, it can be used to build python extensions; this is particularly useful for x86_64 arch.</p>
+</div>
+<div class="section" id="building-atlas">
+<h4><a class="toc-backref" href="#id5">Building ATLAS</a><a class="headerlink" href="#building-atlas" title="Permalink to this headline">¶</a></h4>
+<p>ATLAS is a BLAS/LAPACK implementation which tuned itself on the machine to provide ideal performances, and often match vendor specific implementations. Unfortunately, building ATLAS is not easy.  But, it is getting easier all the time.</p>
+<div class="section" id="building-atlas-by-hand">
+<h5><a class="toc-backref" href="#id6">Building ATLAS by Hand</a><a class="headerlink" href="#building-atlas-by-hand" title="Permalink to this headline">¶</a></h5>
+<p>These instructions show how to build ATLAS (and LAPACK) from their official distributions.</p>
+<p>First, download and unpackage the LAPACK distribution from netlib (you need these to build a complete version of LAPACK).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">netlib</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">lapack</span><span class="o">/</span><span class="n">lapack</span><span class="o">-</span><span class="mf">3.1</span><span class="o">.</span><span class="mf">1.</span><span class="n">tgz</span>
+<span class="n">tar</span> <span class="n">zxvf</span> <span class="n">lapack</span><span class="o">-</span><span class="mf">3.1</span><span class="o">.</span><span class="mf">1.</span><span class="n">tgz</span>
+<span class="n">cd</span> <span class="n">lapack</span><span class="o">-</span><span class="mf">3.1</span><span class="o">.</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>There are several make.inc files in the INSTALL directory of the lapack distribution.  Copy one of those files to the main directory.  For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="n">INSTALL</span><span class="o">/</span><span class="n">make</span><span class="o">.</span><span class="n">inc</span><span class="o">.</span><span class="n">gfortran</span> <span class="n">make</span><span class="o">.</span><span class="n">inc</span>
+</pre></div>
+</div>
+<p>Now, you must edit the make.inc file to ensure that the OPTS and NOOPT lines both contain the flag for compiling position-independent code on your platform (e.g. with gcc/gfortran it is -fPIC).   For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">OPTS</span> <span class="o">=</span> <span class="o">-</span><span class="n">O2</span> <span class="o">-</span><span class="n">fPIC</span>
+<span class="n">NOOPT</span> <span class="o">=</span> <span class="o">-</span><span class="n">O0</span> <span class="o">-</span><span class="n">fPIC</span>
+</pre></div>
+</div>
+<p>(Note:  Make sure that if you build with gfortran that g77 is not installed on your system (or at least is not in your PATH when numpy is being built) as you need to link with the same compiler that you built lapack with when numpy builds. It will try and find g77 first which will lead to linking errors if you have built lapack with gfortran).  Then change to the SRC directory and run make</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">SRC</span>
+<span class="n">make</span>
+</pre></div>
+</div>
+<p>This will create an lapack_&lt;XXXX&gt;.a file in the head lapack directory.  You will need the location of this file to configure atlas.</p>
+<p>Now, download the latest release of ATLAS (these instructions worked on 3.7.37).  See, for example, <a class="reference external" href="https://sourceforge.net/projects/math-atlas/files/">https://sourceforge.net/projects/math-atlas/files/</a>.   Unpackage the result, change to the directory created, and create a directory to contain the resulting build.  This directory should be named appropriate for the platform (you can build for multiple platforms from the same SOURCE tree &#8212; perhaps the source is on a network drive and builds are taking place for multiple platforms).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="n">jxvf</span> <span class="n">atlas3</span><span class="o">.</span><span class="mf">7.37</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+<span class="n">cd</span> <span class="n">ATLAS</span>
+<span class="n">mkdir</span> <span class="n">ATLAS_</span><span class="o">&lt;</span><span class="n">my_platform_type</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">ATLAS_</span><span class="o">&lt;</span><span class="n">my_platform_type</span><span class="o">&gt;</span>
+<span class="o">../</span><span class="n">configure</span> <span class="o">-</span><span class="n">Fa</span> <span class="n">alg</span> <span class="o">-</span><span class="n">fPIC</span> <span class="o">--</span><span class="k">with</span><span class="o">-</span><span class="n">netlib</span><span class="o">-</span><span class="n">lapack</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">lapack</span><span class="o">/</span><span class="n">lapack_</span><span class="o">&lt;</span><span class="n">XXXX</span><span class="o">&gt;.</span><span class="n">a</span>
+<span class="n">make</span>
+</pre></div>
+</div>
+<p>Your atlas libraries should now be in the lib subdirectory of the current directory.  You should copy them to some-place that you can tell site.cfg about so that numpy and scipy can pick them up.  If you want to create shared libraries, then you can do that by</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">lib</span>
+<span class="n">make</span> <span class="n">shared</span>     <span class="c1"># for sequential libraries</span>
+<span class="n">make</span> <span class="n">ptshared</span>   <span class="c1"># for threaded libraries</span>
+</pre></div>
+</div>
+<p>after changing to the lib directory where the .a files are already located.</p>
+</div>
+<div class="section" id="building-atlas-with-atlas-xxx-src-rpm-from-ashigabou-repository">
+<h5><a class="toc-backref" href="#id7">Building ATLAS with atlas-XXX.src.rpm from Ashigabou Repository</a><a class="headerlink" href="#building-atlas-with-atlas-xxx-src-rpm-from-ashigabou-repository" title="Permalink to this headline">¶</a></h5>
+<p>ashigabou repository does not provide binary versions, but provides all the tools to make the building process of ATLAS almost painless: it will build a complete LAPACK, build it with the right fortran compiler to avoid ABI issues (eg _gfortran_string_write, etc...), and with the right compiler flags such as it is usable to build numpy and scipy (with the -fPIC option).</p>
+<p>First, download the source rpm included in the ashigabou repository (the file atlas-version.src.rpm), and install from the ashigabou repository the package lapack3-pic (the rpm will refuse to build without it). Then, use the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rpm</span> <span class="o">-</span><span class="n">ivh</span> <span class="n">atlas</span><span class="o">-</span><span class="n">version</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">rpm</span>
+</pre></div>
+</div>
+<p>This will NOT install atlas, just uncompress all the necessary files for building the rpm in /usr/src/packages. Before building atlas, you must disable dynamic change of CPU frequency (used to decrease battery consumption):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cpufreq</span><span class="o">-</span><span class="n">selector</span> <span class="o">-</span><span class="n">g</span> <span class="n">performance</span>
+</pre></div>
+</div>
+<p>If this fails telling you no cpufreq support, this is fine. Now, to build the rpm, go into the directory /usr/src/packages/SPEC, and execute</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rpmbuild</span> <span class="o">-</span><span class="n">ba</span> <span class="n">atlas</span><span class="o">.</span><span class="n">spec</span>
+</pre></div>
+</div>
+<p>This will build the rpm: this can take a long time, even on a powerful machine. What matters is whether atlas has arch defaults for your machine: if not, it can take several hours (it takes 2 hours and a half on a P4 &#64;3.2 Ghz, but takes ~10 minutes on my macbook under linux). If successfull, you will get an installable rpm in /usr/src/packages/RPMS/ARCH (where ARCH can be x86_64 or i586 or something else depending on the distribution and your arch).</p>
+<p>The rpm contains two (shared) libraries: libblas.so and liblapack.so, installed in /usr/lib/atlas/sse2. They are meant to be drop-out for the standard BLAS and LAPACK (the ones in refblas3 and lapack3). To use the atlas libraries, once you installed numpy and scipy, you should tell the OS to use atlas instead of default libraries by using LD_LIBRARY_PATH. That is, normally, you can use numpy by :</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import numpy as N; a=N.random.randn(1000, 1000); N.dot(a, a)&quot;</span>
+</pre></div>
+</div>
+<p>To use atlas, you do:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">LD_LIBRARY_PATH</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">atlas</span><span class="o">/</span><span class="n">sse2</span> <span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import numpy as N; a=N.random.randn(1000, 1000); N.dot(a, a)&quot;</span>
+</pre></div>
+</div>
+<p>If everything is working correctly, you will see that the above script runs much faster with atlas than without (I see a ten fold speed increase on my machine).</p>
+</div>
+</div>
+</div>
+<div class="section" id="mandriva-2007-1">
+<h3><a class="toc-backref" href="#id8">Mandriva 2007.1</a><a class="headerlink" href="#mandriva-2007-1" title="Permalink to this headline">¶</a></h3>
+<p>Binary packages for NumPy 1.0.3.1 and SciPy 0.5.2.1 are available via the contrib urpmi repository:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">urpmi</span> <span class="n">python</span><span class="o">-</span><span class="n">scipy</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="gentoo">
+<h3><a class="toc-backref" href="#id9">Gentoo</a><a class="headerlink" href="#gentoo" title="Permalink to this headline">¶</a></h3>
+<p>Gentoo includes an ebuild. Type:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">emerge</span> <span class="n">scipy</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="debian-ubuntu">
+<h3><a class="toc-backref" href="#id10">Debian / Ubuntu</a><a class="headerlink" href="#debian-ubuntu" title="Permalink to this headline">¶</a></h3>
+<p>Debian and Ubuntu ship with NumPy and SciPy &#8211; to install their binary packages, use</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">numpy</span> <span class="n">python</span><span class="o">-</span><span class="n">scipy</span>
+</pre></div>
+</div>
+<p>Debian and Ubuntu package optimized BLAS libraries in a exchangeable way. By
+default the reference BLAS libblas3 package is used.
+You can install other libraries like ATLAS or OpenBLAS and change the default
+one used via the alternatives mechanism:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ sudo apt-get install libopenblas-base libatlas3-base
+$ update-alternatives --list libblas.so.3
+/usr/lib/atlas-base/atlas/libblas.so.3
+/usr/lib/libblas/libblas.so.3
+/usr/lib/openblas-base/libopenblas.so.0
+
+$ sudo update-alternatives --set libblas.so.3 /usr/lib/openblas-base/libopenblas.so.0
+</pre></div>
+</div>
+<p>See /usr/share/doc/libatlas3-base/README.Debian for instructions on how to
+build optimized ATLAS packages for your specific CPU.
+The packaged OpenBLAS chooses the optimal code at runtime so it does not need
+recompiling unless the packaged version does not yet support the used CPU.</p>
+<p>As of Jan. 2014 ATLAS is the recommended library to use as OpenBLAS will
+deadlock when used in combination with the <cite>multiprocessing</cite> module
+(or any use of <cite>os.fork</cite>) and older versions (&lt;= 0.2.8) tend to crash when used
+on larger problem sizes.</p>
+<p>You can also use a library you built yourself by preloading it. This does not
+require administrator rights.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">LD_PRELOAD</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">libatlas</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span> <span class="o">./</span><span class="n">my</span><span class="o">-</span><span class="n">application</span>
+</pre></div>
+</div>
+<div class="section" id="installation-from-source">
+<h4><a class="toc-backref" href="#id11">Installation from source:</a><a class="headerlink" href="#installation-from-source" title="Permalink to this headline">¶</a></h4>
+<p>To build from source more packages are needed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">gcc</span> <span class="n">gfortran</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">libblas</span><span class="o">-</span><span class="n">dev</span> <span class="n">liblapack</span><span class="o">-</span><span class="n">dev</span> <span class="n">cython</span>
+</pre></div>
+</div>
+<p>In order to build numpy with integration of optimized BLAS libraries like
+ATLAS or OpenBLAS one needs to setup a <cite>site.cfg</cite> file.
+See the <cite>site.cfg.example</cite> file in the numpy source for the options you can
+set.
+A simple file using OpenBLAS looks like this (requires numpy &gt;= 1.8.0):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">openblas</span><span class="p">]</span>
+<span class="n">library_dirs</span> <span class="o">=</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">openblas</span>
+</pre></div>
+</div>
+<p>Due to issues in the buildsystem as of at least numpy 1.8.0 the OpenBLAS
+installation must embed lapack.
+This means the system package provided version will not work.</p>
+<p>Building with ATLAS should not require a <cite>site.cfg</cite> if libatlas-base-dev is
+installed.</p>
+<p>Alternatively one can apply following patch to numpy to link against the system
+blas by default:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">---</span> <span class="n">a</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">py</span>
+<span class="o">+++</span> <span class="n">b</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">py</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">940</span><span class="p">,</span><span class="mi">7</span> <span class="o">+</span><span class="mi">940</span><span class="p">,</span><span class="mi">7</span> <span class="o">@@</span> <span class="k">def</span> <span class="nf">configuration</span><span class="p">(</span><span class="n">parent_package</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">top_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+     <span class="c1">#######################################################################</span>
+
+     <span class="c1"># Configure blasdot</span>
+<span class="o">-</span>    <span class="n">blas_info</span> <span class="o">=</span> <span class="n">get_info</span><span class="p">(</span><span class="s1">&#39;blas_opt&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="o">+</span>    <span class="n">blas_info</span> <span class="o">=</span> <span class="n">get_info</span><span class="p">(</span><span class="s1">&#39;blas&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+     <span class="c1">#blas_info = {}</span>
+     <span class="k">def</span> <span class="nf">get_dotblas_sources</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="n">build_dir</span><span class="p">):</span>
+         <span class="k">if</span> <span class="n">blas_info</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>Then, you can build numpy with the following, inside the numpy source directory:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build</span>
+</pre></div>
+</div>
+<p>You can change the blas library linked against by setting the BLAS environment
+variable to the path of the library.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">BLAS</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">libopenblas</span><span class="o">.</span><span class="n">so</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build</span>
+</pre></div>
+</div>
+<p>Then, to install it system-wide (not recommended, requires root privileges):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>To install it in another directory, you need to use the prefix option. For example, I like to install local softwares in my $HOME/local, so I do the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>python setup.py install --prefix=$HOME/local
+</pre></div>
+</div>
+<p>To verify if optimized blas is being used check for the presence of the
+<cite>_dotblas.so</cite> file in the installation location.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>find $HOME/local -name _dotblas.so
+</pre></div>
+</div>
+<p>You can use the <cite>ldd</cite> command on this file to see which library it is using.
+If that library is not in a system location you may have to set the
+<cite>LD_LIBRARY_PATH</cite> environment variable to the place the library can be found.
+For example if using the bash shell and having the blas library in <cite>/opt/local/lib</cite> run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">LD_LIBRARY_PATH</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span>
+</pre></div>
+</div>
+<p>Note that if you do not install numpy system wide, you need to tell python to look for the directory where you installed numpy. For example, if you use $HOME/local as the former example, then you should add $HOME/local/lib/python2.7/site-packages in your PYTHONPATH:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>PYTHONPATH=$HOME/local/lib/python2.7/site-packages python
+</pre></div>
+</div>
+<p>(change python2.7 to the version you are using).</p>
+</div>
+</div>
+<div class="section" id="opensuse">
+<h3><a class="toc-backref" href="#id12">openSUSE</a><a class="headerlink" href="#opensuse" title="Permalink to this headline">¶</a></h3>
+<p>(This section reflects the situation of July 2009. If you have newer of more accurate information, feel free to modify this section.)</p>
+<p>OpenSUSE does not contain <strong>NumPy</strong>, <strong>SciPy</strong> or <strong>Matplotlib</strong> in the standard installation. Instead those packages are provided by additional repositories, that seem to be run by volunteers. However Novell provides webspace for some of those repositories. Packages usually exist only for a few current SUSE versions.</p>
+<p>The following repositories are currently the best to obtain <strong>NumPy</strong>, <strong>SciPy</strong> and <strong>Matplotlib</strong>. They can be added to the package manager (<strong>YaST</strong>) with the <strong>Installation Source</strong> dialog. The packages will then appear in the <strong>Software Management</strong> dialog.</p>
+<p>Alternatively the <code class="docutils literal"><span class="pre">*.rpm</span></code> files can be downloaded and installed
+manually (for example &#8216;rpm -U &lt;filename&gt;&#8217; or with &#8216;kpackage&#8217;).</p>
+<ul class="simple">
+<li>Science: [<a class="reference external" href="http://download.opensuse.org/repositories/science/">http://download.opensuse.org/repositories/science/</a>]<ul>
+<li>This repository contains: <strong>NumPy</strong>, <strong>SciPy</strong>, <strong>Matplotlib</strong>, and many more packages of interest for scientific users.</li>
+<li>Installation was tested with openSUSE 11.0 and 11.1, both i586 and x86-64.<ul>
+<li>For openSUSE 11.1-x586 additionally the <a class="reference external" href="https://en.opensuse.org/Additional_package_repositories#Packman">Packman repository</a> was required as an &#8216;Installation Source&#8217;. Select a suitable mirror from the <a class="reference external" href="https://en.opensuse.org/Additional_package_repositories#Packman">list</a>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Education: [<a class="reference external" href="http://download.opensuse-education.org/">http://download.opensuse-education.org/</a>] This project seems to have some backing from Novell. It is primarily oriented towards schools. The repository was added despite of the broken packages, because it is big and still active. Also its relatively wide audience (schools) might lead to continuing development. (The author of this section has also filed bug reports in their Bugzilla.)<ul>
+<li>This repository contains: <strong>NumPy</strong>, <strong>SciPy</strong>, <strong>Matplotlib</strong>, and very many other packages.</li>
+<li>Repository has own website: <a class="reference external" href="https://en.opensuse.org/Education">https://en.opensuse.org/Education</a></li>
+<li>Tested with openSUSE 11.0 and 11.1, x86-64:<ul>
+<li>openSUSE 11.0: <strong>broken</strong> package <strong>SciPy</strong></li>
+<li>openSUSE 11.1: one error in scipy.test(), package seems (mostly) functional though.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Alternatively one can search for packages in repositories hosted by Novell here: One can also search for packages in the <a class="reference external" href="http://software.opensuse.org/search">very big Packman repository: &lt;http://packman.links2linux.org/</a>.</p>
+<ul class="simple">
+<li>Lists of Packman mirrors: <a class="reference external" href="https://en.opensuse.org/Additional_package_repositories#Packman">1</a> <a class="reference external" href="http://packman.links2linux.de/MIRRORS.html">2</a></li>
+<li>The packman repository should be given a low priority (high value, for example 200, in priority field). It contains very many packages, that are also present in SUSE&#8217;s standard repositories. These packages might otherwise override original packages from SUSE.</li>
+</ul>
+<p>Users of older versions of SUSE/openSuse can install <strong>Sage</strong>, a big collection of Mathematics related software. It was recently (Jul. 2009) reported that compiling and installing Sage from sources worked flawlessly, on SUSE Linux 10.2:</p>
+<ul class="simple">
+<li>A more detailed description how to install Sage <a class="reference external" href="http://www.sagemath.org/download-source.html">from sources</a> is on this page too.</li>
+</ul>
+<div class="section" id="atlas">
+<h4><a class="toc-backref" href="#id13">ATLAS</a><a class="headerlink" href="#atlas" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference external" href="http://math-atlas.sourceforge.net/">ATLAS</a> is a replacement for <a class="reference external" href="http://www.netlib.org/blas/index.html">BLAS</a> and parts of <a class="reference external" href="http://www.netlib.org/lapack/index.html">LAPACK</a>, that is much faster. It must be built from sources, because it optimizes itself for the computer&#8217;s processor. The build process will run for ten minutes to several hours.</p>
+<p><strong>There is currently no comfortable way to use ATLAS on openSuse.</strong></p>
+<p>The  <a class="reference internal" href="#building-atlas">Building ATLAS</a> instructions on this page work, but unfortunately the NumPy and SciPy packages don&#8217;t work with ATLAS. One could build NumPy and SciPy from sources though, and a relatively painless way to do this is the Sage package. (If you know a comfortable way to make ATLAS work on openSuse, please put it here into the Wiki.)</p>
+<p>David Cournapeau has a repository devoted to ATLAS, but he has not added packages for recent SUSE versions.</p>
+<ul>
+<li><p class="first">Ashigabou [<a class="reference external" href="https://build.opensuse.org/project/show/home:ashigabou">https://build.opensuse.org/project/show/home:ashigabou</a>]</p>
+<blockquote>
+<div><p>This repository contains: <strong>ATLAS</strong> and additionally other scientific software.</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="broken-blas">
+<h4><a class="toc-backref" href="#id14">Broken BLAS</a><a class="headerlink" href="#broken-blas" title="Permalink to this headline">¶</a></h4>
+<p>SUSE (and Red Hat) regularly shipped versions of the BLAS library where some functions were missing. This bug has finally been fixed in March 2007. This means SUSE 10.2 and prior come with a broken BLAS, in later versions SUSE&#8217;s original BLAS should work. Unfortunately the repositories mentioned here do no longer contain corrected/complete packages of BLAS and LAPACK for the affected versions (SUSE 10.2 and older).</p>
+<p>The bug&#8217;s cause was as follows: The BLAS rpm is created from <a class="reference external" href="http://www.netlib.org">Netlib&#8217;s</a> <a class="reference external" href="http://www.netlib.org/lapack/index.html">LAPACK package</a> and not from the <a class="reference external" href="http://www.netlib.org/blas/index.html">BLAS package</a>. Until March 2007 however the LAPACK library did only contain a subset of the functions that were in BLAS. Finally someone begged the LAPACK developers to include the whole BLAS library in the LAPACK package, and they did.</p>
+<p>For details see: [<a class="reference external" href="https://bugzilla.novell.com/show_bug.cgi?id=228824">https://bugzilla.novell.com/show_bug.cgi?id=228824</a>] and [<a class="reference external" href="http://www.netlib.org/lapack/lapack-3.1.1.changes">http://www.netlib.org/lapack/lapack-3.1.1.changes</a>]</p>
+</div>
+</div>
+<div class="section" id="building-everything-from-source-with-gfortran-on-ubuntu-nov-2010">
+<h3><a class="toc-backref" href="#id15">Building everything from source with gfortran on Ubuntu (Nov 2010)</a><a class="headerlink" href="#building-everything-from-source-with-gfortran-on-ubuntu-nov-2010" title="Permalink to this headline">¶</a></h3>
+<p>These are instructions for building everything from source on a 64 bit Ubuntu system (Maverick: 10.10) on a multicore processor using the latest versions as of November 2010. Everything is installed in a user directory structure in $HOME/local (/home/sam/local in my case). Administrator priviliges are required only in the beginning to disable CPU throttling while building ATLAS.</p>
+<div class="section" id="install-required-packages">
+<h4><a class="toc-backref" href="#id16">Install required packages</a><a class="headerlink" href="#install-required-packages" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">swig</span> <span class="n">gfortran</span> <span class="n">python</span><span class="o">-</span><span class="n">nose</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-1-disable-cpu-throttling">
+<h4><a class="toc-backref" href="#id17">Step 1: Disable CPU Throttling</a><a class="headerlink" href="#step-1-disable-cpu-throttling" title="Permalink to this headline">¶</a></h4>
+<p>ATLAS&#8217; timing algorithm require CPU throttling to be disabled. This disables it on the 0th core:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">cpufreq</span><span class="o">-</span><span class="n">selector</span> <span class="o">-</span><span class="n">g</span> <span class="n">performance</span>
+</pre></div>
+</div>
+<p>Then disable it on each additional core. For a quad core processor, these commands will be required:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">cp</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">cpu</span><span class="o">/</span><span class="n">cpu0</span><span class="o">/</span><span class="n">cpufreq</span><span class="o">/</span><span class="n">scaling_governor</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">cpu</span><span class="o">/</span><span class="n">cpu1</span><span class="o">/</span><span class="n">cpufreq</span><span class="o">/</span><span class="n">scaling_governor</span>
+<span class="n">sudo</span> <span class="n">cp</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">cpu</span><span class="o">/</span><span class="n">cpu0</span><span class="o">/</span><span class="n">cpufreq</span><span class="o">/</span><span class="n">scaling_governor</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">cpu</span><span class="o">/</span><span class="n">cpu2</span><span class="o">/</span><span class="n">cpufreq</span><span class="o">/</span><span class="n">scaling_governor</span>
+<span class="n">sudo</span> <span class="n">cp</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">cpu</span><span class="o">/</span><span class="n">cpu0</span><span class="o">/</span><span class="n">cpufreq</span><span class="o">/</span><span class="n">scaling_governor</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">cpu</span><span class="o">/</span><span class="n">cpu3</span><span class="o">/</span><span class="n">cpufreq</span><span class="o">/</span><span class="n">scaling_governor</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-build-atlas-3-9-32-with-complete-lapack-3-2-2">
+<h4><a class="toc-backref" href="#id18">Step 2: Build ATLAS(3.9.32) with complete Lapack(3.2.2)</a><a class="headerlink" href="#step-2-build-atlas-3-9-32-with-complete-lapack-3-2-2" title="Permalink to this headline">¶</a></h4>
+<p>Download lapack.tgz from netlib.org and atlas3.9.32.tar.bz2. Extract the atlas archive into a directory named ATLAS and from within it, issue these commands:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">BUILD</span>
+<span class="n">cd</span> <span class="n">BUILD</span>
+<span class="o">../</span><span class="n">configure</span> <span class="o">-</span><span class="n">b</span> <span class="mi">64</span> <span class="o">-</span><span class="n">Fa</span> <span class="n">alg</span> <span class="o">-</span><span class="n">fPIC</span> <span class="o">--</span><span class="k">with</span><span class="o">-</span><span class="n">netlib</span><span class="o">-</span><span class="n">lapack</span><span class="o">-</span><span class="n">tarfile</span><span class="o">=&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">lapack</span><span class="o">.</span><span class="n">tgz</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">sam</span><span class="o">/</span><span class="n">local</span>
+<span class="n">make</span>
+<span class="n">cd</span> <span class="n">lib</span>
+<span class="n">make</span> <span class="n">shared</span>
+<span class="n">make</span> <span class="n">ptshared</span>
+<span class="n">cd</span> <span class="o">..</span>
+<span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>Note that make ptshared might not work on a single core machine. Note also that the first &#8220;make&#8221; command above will take several hours to run, as ATLAS optimizes various performance parameters.</p>
+</div>
+<div class="section" id="step-3-build-umfpack-5-5-0-with-amd-2-2-1-ufconfig-3-5-0-and-cholmod-1-7-1">
+<h4><a class="toc-backref" href="#id19">Step 3: Build UMFPACK (5.5.0) with AMD (2.2.1), UFConfig(3.5.0) and CHOLMOD (1.7.1)</a><a class="headerlink" href="#step-3-build-umfpack-5-5-0-with-amd-2-2-1-ufconfig-3-5-0-and-cholmod-1-7-1" title="Permalink to this headline">¶</a></h4>
+<p>NOTE: Downloading and building the entire <a class="reference external" href="http://faculty.cse.tamu.edu/davis/suitesparse.html">SuiteSparse</a> all at once is easier than the following steps. <a class="reference external" href="http://faculty.cse.tamu.edu/davis/suitesparse.html">SuiteSparse</a> Version 4.0.2 is confirmed to have worked on Xubuntu 12.10 with the latest ATLAS, LAPACK, <a class="reference external" href="http://www.numpy.org/">NumPy</a> and SciPy as of 2012-10-18.</p>
+<p>Download all four packages and extract them in the same directory. Edit UFconfig/UFconfig.mk to read:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CC</span> <span class="o">=</span> <span class="n">gcc</span>
+<span class="n">CFLAGS</span> <span class="o">=</span> <span class="o">-</span><span class="n">O3</span> <span class="o">-</span><span class="n">fexceptions</span> <span class="o">-</span><span class="n">m64</span> <span class="o">-</span><span class="n">fPIC</span>
+
+<span class="n">F77</span> <span class="o">=</span> <span class="n">gfortran</span>
+<span class="n">F77FLAGS</span> <span class="o">=</span> <span class="o">-</span><span class="n">O</span> <span class="o">-</span><span class="n">m64</span> <span class="o">-</span><span class="n">fPIC</span>
+
+<span class="n">INSTALL_LIB</span> <span class="o">=</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">sam</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span>
+<span class="n">INSTALL_INCLUDE</span> <span class="o">=</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">sam</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">include</span>
+
+<span class="n">METIS_PATH</span> <span class="o">=</span>
+<span class="n">METIS</span> <span class="o">=</span>
+
+<span class="n">CHOLMOD_CONFIG</span> <span class="o">=</span> <span class="o">-</span><span class="n">DNPARTITION</span>
+</pre></div>
+</div>
+<p>Then issue the following commands</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">UMFPACK</span>
+<span class="n">make</span> <span class="n">library</span>
+<span class="n">make</span> <span class="n">install</span>
+<span class="n">cd</span> <span class="o">../</span><span class="n">AMD</span>
+<span class="n">make</span> <span class="n">install</span>
+<span class="n">cd</span> <span class="o">../</span><span class="n">UFconfig</span>
+<span class="n">cp</span> <span class="n">UFconfig</span><span class="o">.</span><span class="n">h</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">sam</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">include</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-4-build-numpy-1-5-0">
+<h4><a class="toc-backref" href="#id20">Step 4: Build numpy(1.5.0)</a><a class="headerlink" href="#step-4-build-numpy-1-5-0" title="Permalink to this headline">¶</a></h4>
+<p>Untar the archive, copy site.cfg.example to site.cfg and edit it:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">DEFAULT</span><span class="p">]]</span>
+<span class="n">library_dirs</span> <span class="o">=</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">sam</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span>
+<span class="n">include_dirs</span> <span class="o">=</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">sam</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">include</span>
+</pre></div>
+</div>
+<p>In the same file, uncomment these lines:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">blas_opt</span><span class="p">]</span>
+<span class="n">libraries</span> <span class="o">=</span> <span class="n">ptf77blas</span><span class="p">,</span> <span class="n">ptcblas</span><span class="p">,</span> <span class="n">atlas</span>
+
+<span class="p">[</span><span class="n">lapack_opt</span><span class="p">]</span>
+<span class="n">libraries</span> <span class="o">=</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">ptf77blas</span><span class="p">,</span> <span class="n">ptcblas</span><span class="p">,</span> <span class="n">atlas</span>
+
+<span class="p">[</span><span class="n">amd</span><span class="p">]</span>
+<span class="n">amd_libs</span> <span class="o">=</span> <span class="n">amd</span>
+
+<span class="p">[</span><span class="n">umfpack</span><span class="p">]</span>
+<span class="n">umfpack_libs</span> <span class="o">=</span> <span class="n">umfpack</span>
+</pre></div>
+</div>
+<p>For a single core machine, uncomment these lines:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">blas_opt</span><span class="p">]</span>
+<span class="n">libraries</span> <span class="o">=</span> <span class="n">f77blas</span><span class="p">,</span> <span class="n">cblas</span><span class="p">,</span> <span class="n">atlas</span>
+<span class="p">[</span><span class="n">lapack_opt</span><span class="p">]</span>
+<span class="n">libraries</span> <span class="o">=</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">f77blas</span><span class="p">,</span> <span class="n">cblas</span><span class="p">,</span> <span class="n">atlas</span>
+</pre></div>
+</div>
+<p>Then use the standard installation technique</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">sam</span><span class="o">/</span><span class="n">local</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-5-build-scipy-0-8-0">
+<h4><a class="toc-backref" href="#id21">Step 5: Build scipy(0.8.0)</a><a class="headerlink" href="#step-5-build-scipy-0-8-0" title="Permalink to this headline">¶</a></h4>
+<p>Make sure that $HOME/local/bin is in $PATH (for f2py) and $PYTHONPATH contains $HOME/local/lib/python-2.6/site-packages (for numpy)</p>
+<p>Do a standard install</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">sam</span><span class="o">/</span><span class="n">local</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="building-everything-from-source-with-gfortran-on-ubuntu-feb-2008">
+<h3><a class="toc-backref" href="#id22">Building everything from source with gfortran on Ubuntu (Feb 2008)</a><a class="headerlink" href="#building-everything-from-source-with-gfortran-on-ubuntu-feb-2008" title="Permalink to this headline">¶</a></h3>
+<p>This is how I built everything from source on a 64 bit Ubuntu system with latest versions as of February 2008. It took me some time to work out the issues so I thought I&#8217;d put the details here. I believe it should work the same on 32 bit systems (leaving out 64 bit related options).</p>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="#id23">Install required packages</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">swig</span> <span class="n">gfortran</span>
+</pre></div>
+</div>
+<p>Install nose (easy_install nose). Do not install python-nose, it is an earlier version that doesn&#8217;t work with scipy. Also make sure g77 is not installed. Distutils will not use gfortran if g77 is installed.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">remove</span> <span class="n">python</span><span class="o">-</span><span class="n">nose</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">remove</span> <span class="n">g77</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">setuptools</span>
+<span class="n">sudo</span> <span class="n">easy_install</span> <span class="n">nose</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-lapack-3-1-1">
+<h4><a class="toc-backref" href="#id24">Build lapack (3.1.1)</a><a class="headerlink" href="#build-lapack-3-1-1" title="Permalink to this headline">¶</a></h4>
+<p>As described above, copy make.inc.gfortran, add -fPIC flags (and -m64 if building 64 bit) to OPTS and NOOPT. Run make in SRC directory.</p>
+</div>
+<div class="section" id="build-atlas-3-8-0">
+<h4><a class="toc-backref" href="#id25">Build ATLAS (3.8.0)</a><a class="headerlink" href="#build-atlas-3-8-0" title="Permalink to this headline">¶</a></h4>
+<p>As described above untar, create a directory for your build in ATLAS and run configure (add option &#8216;-b 64&#8217; for 64 bit).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">cpufreq</span><span class="o">-</span><span class="n">selector</span> <span class="o">-</span><span class="n">g</span> <span class="n">performance</span>
+<span class="o">../</span><span class="n">configure</span> <span class="o">-</span><span class="n">b</span> <span class="mi">64</span> <span class="o">-</span><span class="n">Fa</span> <span class="n">alg</span> <span class="o">-</span><span class="n">fPIC</span> <span class="o">--</span><span class="k">with</span><span class="o">-</span><span class="n">netlib</span><span class="o">-</span><span class="n">lapack</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">lapack</span><span class="o">/</span><span class="n">lapack_</span><span class="o">&lt;</span><span class="n">XXXX</span><span class="o">&gt;.</span><span class="n">a</span>
+<span class="n">make</span>
+</pre></div>
+</div>
+<p>Copy the libraries to a lib directory (/usr/local/lib or ~/scipy_build/lib for example). I found it&#8217;s easier to copy all needed libraries and files to a common directory.</p>
+</div>
+<div class="section" id="build-umfpack-5-2-0">
+<h4><a class="toc-backref" href="#id26">Build UMFPACK (5.2.0)</a><a class="headerlink" href="#build-umfpack-5-2-0" title="Permalink to this headline">¶</a></h4>
+<p>Get the latest versions of AMD, UFconfig and UMFPACK and untar them into a directory.</p>
+<p>UFconfig/UFconfig.mk should contain:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CC</span> <span class="o">=</span> <span class="n">gcc</span>
+<span class="n">CFLAGS</span> <span class="o">=</span> <span class="o">-</span><span class="n">O3</span> <span class="o">-</span><span class="n">fexceptions</span> <span class="o">-</span><span class="n">m64</span> <span class="o">-</span><span class="n">fPIC</span>
+<span class="n">F77</span> <span class="o">=</span> <span class="n">gfortran</span>
+<span class="n">F77FLAGS</span> <span class="o">=</span> <span class="o">-</span><span class="n">O</span> <span class="o">-</span><span class="n">m64</span> <span class="o">-</span><span class="n">fPIC</span>
+
+<span class="n">BLAS</span> <span class="o">=</span> <span class="o">-</span><span class="n">L</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">gcc</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="mf">4.2</span><span class="o">.</span><span class="mi">1</span> <span class="o">-</span><span class="n">L</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">robince</span><span class="o">/</span><span class="n">scipy_build</span><span class="o">/</span><span class="n">lib</span> <span class="o">-</span><span class="n">llapack</span> <span class="o">-</span><span class="n">lf77blas</span> <span class="o">-</span><span class="n">lcblas</span> <span class="o">-</span><span class="n">latlas</span> <span class="o">-</span><span class="n">lgfortran</span>
+<span class="n">LAPACK</span> <span class="o">=</span> <span class="o">-</span><span class="n">L</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">gcc</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="mf">4.2</span><span class="o">.</span><span class="mi">1</span> <span class="o">-</span><span class="n">L</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">robince</span><span class="o">/</span><span class="n">scipy_build</span><span class="o">/</span><span class="n">lib</span> <span class="o">-</span><span class="n">llapack</span> <span class="o">-</span><span class="n">lf77blas</span> <span class="o">-</span><span class="n">lcblas</span> <span class="o">-</span><span class="n">latlas</span> <span class="o">-</span><span class="n">lgfortran</span>
+</pre></div>
+</div>
+<p>On a 32 bit system, remove the -m64 flags and change the first -L option to -L/usr/lib/gcc/i486-linux-gnu/4.2.1.</p>
+<p>Run &#8216;make&#8217; in UMFPACK directory. Copy resulting libraries and include files.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="n">AMD</span><span class="o">/</span><span class="n">Lib</span><span class="o">/</span><span class="n">libamd</span><span class="o">.</span><span class="n">a</span> <span class="o">~/</span><span class="n">scipy_build</span><span class="o">/</span><span class="n">lib</span>
+<span class="n">cp</span> <span class="n">UMFPACK</span><span class="o">/</span><span class="n">Lib</span><span class="o">/</span><span class="n">libumfpack</span><span class="o">.</span><span class="n">a</span> <span class="o">~/</span><span class="n">scipy_build</span><span class="o">/</span><span class="n">lib</span>
+<span class="n">cp</span> <span class="n">AMD</span><span class="o">/</span><span class="n">Include</span><span class="o">/</span><span class="n">amd</span><span class="o">.</span><span class="n">h</span> <span class="o">~/</span><span class="n">scipy_build</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">include</span>
+<span class="n">cp</span> <span class="n">UFconfig</span><span class="o">/</span><span class="n">UFconfig</span><span class="o">.</span><span class="n">h</span> <span class="o">~/</span><span class="n">scipy_build</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">include</span>
+<span class="n">cp</span> <span class="n">UMFPACK</span><span class="o">/</span><span class="n">Include</span><span class="o">/*.</span><span class="n">h</span> <span class="o">~/</span><span class="n">scipy_build</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">include</span>
+</pre></div>
+</div>
+<p>Copy libgfortran into scipy library directory (doesn&#8217;t seem to work if it doesn&#8217;t find the umfpack_libs together).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">gcc</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="mf">4.2</span><span class="o">/</span><span class="n">libgfortran</span><span class="o">.*</span> <span class="o">~/</span><span class="n">scipy_build</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-fftw-3-1-2">
+<h4><a class="toc-backref" href="#id27">Build FFTW (3.1.2)</a><a class="headerlink" href="#build-fftw-3-1-2" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="scipy-versions-0-7-and-numpy-1-2">
+<h5><a class="toc-backref" href="#id28">SciPy Versions &gt;= 0.7 and NumPy &gt;= 1.2</a><a class="headerlink" href="#scipy-versions-0-7-and-numpy-1-2" title="Permalink to this headline">¶</a></h5>
+<p>Because of license, configuration, and maintenance issues support for FFTW was removed in versions of SciPy &gt;= 0.7 and NumPy &gt;= 1.2.  Instead now uses a built-in version of fftpack.</p>
+<p>There are a couple ways to take advantage of the speed of FFTW if necessary for your analysis.</p>
+<ol class="arabic simple">
+<li>Downgrade to a NumPy/SciPy version that includes support.</li>
+<li>Install or create your own wrapper of FFTW.  See <a class="reference external" href="https://sourceforge.net/projects/pyfftw.berlios/">https://sourceforge.net/projects/pyfftw.berlios/</a> as an un-endorsed example.</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h5><a class="toc-backref" href="#id29">SciPy Versions &lt; 0.7 and NumPy &lt; 1.2</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h5>
+<p>After untarring, run configure. I ran configure first and extracted the suggested FLAGS from the Makefile, then added -fPIC and -m64. (Not sure if this is necessary)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">sse2</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">threads</span> <span class="o">--</span><span class="k">with</span><span class="o">-</span><span class="n">combined</span><span class="o">-</span><span class="n">threads</span> <span class="n">CFLAGS</span><span class="o">=</span><span class="s2">&quot;-O3 -fomit-frame-pointer -fstrict-aliasing -ffast-math -pthread -fPIC -m64&quot;</span> <span class="n">FFLAGS</span><span class="o">=</span><span class="s2">&quot;-g -O2 -fPIC -m64&quot;</span> <span class="n">CXXFLAGS</span><span class="o">=</span><span class="s2">&quot;-g -O2 -fPIC -m64&quot;</span>
+<span class="n">make</span>
+<span class="n">sudo</span> <span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="build-numpy-and-scipy">
+<h4><a class="toc-backref" href="#id30">Build NumPy and SciPy</a><a class="headerlink" href="#build-numpy-and-scipy" title="Permalink to this headline">¶</a></h4>
+<p>Set the following entries in site.cfg (this will also work with fftw if it has been compiled and installed in the default location (/usr/local):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">DEFAULT</span><span class="p">]]</span>
+<span class="n">library_dirs</span> <span class="o">=</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">robince</span><span class="o">/</span><span class="n">scipy_build</span><span class="o">/</span><span class="n">lib</span>
+<span class="n">include_dirs</span> <span class="o">=</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">include</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">robince</span><span class="o">/</span><span class="n">scipy_build</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">include</span>
+
+<span class="p">[</span><span class="n">atlas</span><span class="p">]</span>
+<span class="n">atlas_libs</span> <span class="o">=</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">f77blas</span><span class="p">,</span> <span class="n">cblas</span><span class="p">,</span> <span class="n">atlas</span>
+
+<span class="p">[</span><span class="n">amd</span><span class="p">]</span>
+<span class="n">amd_libs</span> <span class="o">=</span> <span class="n">amd</span>
+
+<span class="p">[</span><span class="n">umfpack</span><span class="p">]</span>
+<span class="n">umfpack_libs</span> <span class="o">=</span> <span class="n">umfpack</span><span class="p">,</span> <span class="n">gfortran</span>
+
+<span class="p">[</span><span class="n">fftw</span><span class="p">]</span>
+<span class="n">libraries</span> <span class="o">=</span> <span class="n">fftw3</span>
+</pre></div>
+</div>
+<p>Build NumPy and SciPy.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">build</span>
+<span class="n">sudo</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="any-distribution-with-intel-c-compiler-and-mkl">
+<h3><a class="toc-backref" href="#id31">Any distribution with Intel C compiler and MKL</a><a class="headerlink" href="#any-distribution-with-intel-c-compiler-and-mkl" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="intel-mkl-11-0-updated-dec-2012">
+<h4><a class="toc-backref" href="#id32">Intel MKL 11.0 (updated Dec 2012)</a><a class="headerlink" href="#intel-mkl-11-0-updated-dec-2012" title="Permalink to this headline">¶</a></h4>
+<p>Add the following lines to site.cfg in your top level NumPy directory to use Intel® MKL for Intel® 64 (or earlier known as em64t) architecture, considering the default installation path of Intel® MKL which is bundled with Intel® Composer XE SP1 version on Linux:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mkl</span><span class="p">]</span>
+<span class="n">library_dirs</span> <span class="o">=</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">intel</span><span class="o">/</span><span class="n">composer_xe_2013</span><span class="o">/</span><span class="n">mkl</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">intel64</span>
+<span class="n">include_dirs</span> <span class="o">=</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">intel</span><span class="o">/</span><span class="n">composer_xe_2013</span><span class="o">/</span><span class="n">mkl</span><span class="o">/</span><span class="n">include</span>
+<span class="n">mkl_libs</span> <span class="o">=</span> <span class="n">mkl_intel_lp64</span><span class="p">,</span><span class="n">mkl_intel_thread</span><span class="p">,</span><span class="n">mkl_core</span>
+</pre></div>
+</div>
+<p>If you are building NumPy for 32 bit, please add as the following</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mkl</span><span class="p">]</span>
+<span class="n">library_dirs</span> <span class="o">=</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">intel</span><span class="o">/</span><span class="n">composer_xe_2013</span><span class="o">/</span><span class="n">mkl</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ia32</span>
+<span class="n">include_dirs</span> <span class="o">=</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">intel</span><span class="o">/</span><span class="n">composer_xe_2013</span><span class="o">/</span><span class="n">mkl</span><span class="o">/</span><span class="n">include</span>
+<span class="n">mkl_libs</span> <span class="o">=</span> <span class="n">mkl_intel</span><span class="p">,</span><span class="n">mkl_intel_thread</span><span class="p">,</span><span class="n">mkl_core</span>
+</pre></div>
+</div>
+<p>Instead of the layered linking approach for the Intel® MKL as shown above, you may also use the dynamic interface lib mkl_rt.lib. So, for both the ia32 and intel64 architecture make the change as below</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkl_libs</span> <span class="o">=</span> <span class="n">mkl_rt</span>
+</pre></div>
+</div>
+<p>Modify cc_exe in numpy/numpy/distutils/intelccompiler.py to be something like:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cc_exe</span> <span class="o">=</span> <span class="s1">&#39;icc -O2 -g -openmp -avx&#39;</span>
+</pre></div>
+</div>
+<p>Here we use, default optimizations (-O2), OpenMP threading (-openmp) and Intel® AVX optimizations for Intel® Xeon E5 or E3 Series which are based on Intel® SandyBridge Architecture (-avx).  Run icc &#8211;help for more information on processor-specific options.</p>
+<p>Compile and install NumPy with the Intel compiler (on 64-bit platforms replace &#8220;intel&#8221; with &#8220;intelem&#8221;):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">config</span> <span class="o">--</span><span class="n">compiler</span><span class="o">=</span><span class="n">intel</span> <span class="n">build_clib</span> <span class="o">--</span><span class="n">compiler</span><span class="o">=</span><span class="n">intel</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">compiler</span><span class="o">=</span><span class="n">intel</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>Compile and install SciPy with the Intel compilers (on 64-bit platforms replace &#8220;intel&#8221; with &#8220;intelem&#8221;):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">config</span> <span class="o">--</span><span class="n">compiler</span><span class="o">=</span><span class="n">intel</span> <span class="o">--</span><span class="n">fcompiler</span><span class="o">=</span><span class="n">intel</span> <span class="n">build_clib</span> <span class="o">--</span><span class="n">compiler</span><span class="o">=</span><span class="n">intel</span> <span class="o">--</span><span class="n">fcompiler</span><span class="o">=</span><span class="n">intel</span> <span class="n">build_ext</span> <span class="o">--</span><span class="n">compiler</span><span class="o">=</span><span class="n">intel</span> <span class="o">--</span><span class="n">fcompiler</span><span class="o">=</span><span class="n">intel</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>You&#8217;ll have to set LD_LIBRARY_PATH to Intel® MKL libraries (exact values will depend on your architecture, compiler and library versions) and OpenMP library for NumPy to work.  If you build NumPy for Intel® 64 platforms:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$export LD_LIBRARY_PATH=/opt/intel/composer_xe_2013/mkl/lib/intel64: /opt/intel/composer_xe_2013/compiler/lib/intel64:$LD_LIBRARY_PATH
+</pre></div>
+</div>
+<p>If you build NumPy for ia32 bit platforms:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$export LD_LIBRARY_PATH=/opt/intel/composer_xe_2013/mkl/lib/ia32: /opt/intel/composer_xe_2013/compiler/lib/ia32:$LD_LIBRARY_PATH
+</pre></div>
+</div>
+</div>
+<div class="section" id="intel-mkl-10-0">
+<h4><a class="toc-backref" href="#id33">Intel MKL 10.0</a><a class="headerlink" href="#intel-mkl-10-0" title="Permalink to this headline">¶</a></h4>
+<p>The above instructions must be slightly modified to install NumPy 1.6 with Intel MKL 10.0 on a 64-bit Red Hat 4 system.  If threading is desired, set</p>
+<p><code class="docutils literal"><span class="pre">mkl_libs</span> <span class="pre">=</span> <span class="pre">mkl_intel_lp64,</span> <span class="pre">mkl_intel_thread,</span> <span class="pre">mkl_core,</span> <span class="pre">guide</span></code></p>
+<p>Ensure that the <strong>-openmp</strong> compile flag is passed to the Intel Fortran Compiler (NOT the C compiler).</p>
+<p>If threading is not desired, set</p>
+<p><code class="docutils literal"><span class="pre">mkl_libs</span> <span class="pre">=</span> <span class="pre">mkl_intel_lp64,</span> <span class="pre">mkl_core</span></code>.</p>
+</div>
+<div class="section" id="older-information">
+<h4><a class="toc-backref" href="#id34">Older information</a><a class="headerlink" href="#older-information" title="Permalink to this headline">¶</a></h4>
+<p>It is possible that LD_LIBRARY_PATH causes a problem, if you have installed MKL and Composer XE in other directories than the standard ones.  The only solution I&#8217;ve found that always works is to build Python, NumPy and SciPy inside an environment where you&#8217;ve set the LD_RUN_PATH variable, e.g:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">LD_RUN_PATH</span><span class="o">=~/</span><span class="n">opt</span><span class="o">/</span><span class="n">lib</span><span class="p">:</span><span class="o">~/</span><span class="n">intel</span><span class="o">/</span><span class="n">composer_xe_2013</span><span class="o">/</span><span class="n">compiler</span><span class="o">/</span><span class="n">lib</span><span class="p">:</span><span class="o">~/</span><span class="n">intel</span><span class="o">/</span><span class="n">composer_xe_2013</span><span class="o">/</span><span class="n">mkl</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ia32</span>
+</pre></div>
+</div>
+<p>Configure Python with <code class="docutils literal"><span class="pre">--prefix=$HOME/opt</span></code>, make, make install, add <code class="docutils literal"><span class="pre">$HOME/opt/bin</span></code> to the front of your PATH and then build NumPy and SciPy with the <code class="docutils literal"><span class="pre">site.cfg</span></code> as above in their top level directories (check the config step&#8217;s output carefully to make sure it selects MKL). Built like this, you shouldn&#8217;t have to set any LD_LIBRARY_PATH for NumPy and SciPy to work. Run the test suites to verify this.</p>
+</div>
+</div>
+<div class="section" id="any-linux-distro-self-contained-local-installation-with-sage">
+<h3><a class="toc-backref" href="#id35">Any Linux distro: self-contained local installation with Sage.</a><a class="headerlink" href="#any-linux-distro-self-contained-local-installation-with-sage" title="Permalink to this headline">¶</a></h3>
+<p>All you need is some basic tools like gcc (no fortran).</p>
+<p>Follow the instructions here to build sage from source:</p>
+<p><a class="reference external" href="http://www.sagemath.org/doc/installation/source.html">http://www.sagemath.org/doc/installation/source.html</a></p>
+<p>All you have to do is unpack the tar and type <strong>make</strong>. This takes about 3 hours.</p>
+<p>This will install sage in its own directory. python (and ipython) can be found in SAGEROOT/local/bin</p>
+<p>If you don&#8217;t want to have to type in absolute paths, you can set the environment variables to point to your sage executables. To do this, run sage with the -sh option. My .profile contains the line</p>
+<p>~/Sage/sage -sh</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+          </div>
+      <div class="spc-rightsidebar span3">
+        <div class="sphinxsidebarwrapper">
+
+<style type="text/css">
+a.extlink:after {
+    margin-left: 5px;
+    content: url("../../_static/external-link.png");
+}
+</style>
+
+
+
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">SciPy library:</li>
+    <li >
+      <a href="../index.html">SciPy (library)</a>
+    </li>
+    <li >
+      <a href="../license.html">License</a></li>
+    <li >
+      <a href="../download.html">Download</a></li>
+    <li><a class="extlink" href="http://docs.scipy.org/doc/">Documentation</a> 
+    <li >
+      <a href="index.html">Build instructions</a>
+      <ul class="nav nav-list">
+	<li class="active">
+	  <a href="#">Linux</a></li>
+	<li >
+	  <a href="windows.html">Windows</a></li>
+	<li >
+	  <a href="macosx.html">Mac OSX</a></li>
+      </ul>
+      
+    </li>
+    <li >
+      <a href="../mailing-lists.html">Mailing Lists</a></li>
+    <li >
+      <a href="../bug-report.html">Report Bugs</a></li>
+    <li >
+      <a href="../dev-zone.html">Developer Zone</a></li>
+    <li >
+      <a href="../donations.html">Donations</a></li>
+    <li >
+      <a href="../faq.html">FAQ</a></li>
+  </ul>
+</div>
+
+
+
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Building From Source on Linux</a><ul>
+<li><a class="reference internal" href="#generic-instructions">Generic instructions</a></li>
+<li><a class="reference internal" href="#specific-instructions">Specific instructions</a><ul>
+<li><a class="reference internal" href="#fedora-core-8-opensuse-10-2-rhel-centos-5">Fedora Core 8, openSUSE 10.2, RHEL/Centos 5</a><ul>
+<li><a class="reference internal" href="#basic-install">Basic install</a></li>
+<li><a class="reference internal" href="#building-atlas">Building ATLAS</a><ul>
+<li><a class="reference internal" href="#building-atlas-by-hand">Building ATLAS by Hand</a></li>
+<li><a class="reference internal" href="#building-atlas-with-atlas-xxx-src-rpm-from-ashigabou-repository">Building ATLAS with atlas-XXX.src.rpm from Ashigabou Repository</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mandriva-2007-1">Mandriva 2007.1</a></li>
+<li><a class="reference internal" href="#gentoo">Gentoo</a></li>
+<li><a class="reference internal" href="#debian-ubuntu">Debian / Ubuntu</a><ul>
+<li><a class="reference internal" href="#installation-from-source">Installation from source:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#opensuse">openSUSE</a><ul>
+<li><a class="reference internal" href="#atlas">ATLAS</a></li>
+<li><a class="reference internal" href="#broken-blas">Broken BLAS</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-everything-from-source-with-gfortran-on-ubuntu-nov-2010">Building everything from source with gfortran on Ubuntu (Nov 2010)</a><ul>
+<li><a class="reference internal" href="#install-required-packages">Install required packages</a></li>
+<li><a class="reference internal" href="#step-1-disable-cpu-throttling">Step 1: Disable CPU Throttling</a></li>
+<li><a class="reference internal" href="#step-2-build-atlas-3-9-32-with-complete-lapack-3-2-2">Step 2: Build ATLAS(3.9.32) with complete Lapack(3.2.2)</a></li>
+<li><a class="reference internal" href="#step-3-build-umfpack-5-5-0-with-amd-2-2-1-ufconfig-3-5-0-and-cholmod-1-7-1">Step 3: Build UMFPACK (5.5.0) with AMD (2.2.1), UFConfig(3.5.0) and CHOLMOD (1.7.1)</a></li>
+<li><a class="reference internal" href="#step-4-build-numpy-1-5-0">Step 4: Build numpy(1.5.0)</a></li>
+<li><a class="reference internal" href="#step-5-build-scipy-0-8-0">Step 5: Build scipy(0.8.0)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-everything-from-source-with-gfortran-on-ubuntu-feb-2008">Building everything from source with gfortran on Ubuntu (Feb 2008)</a><ul>
+<li><a class="reference internal" href="#id1">Install required packages</a></li>
+<li><a class="reference internal" href="#build-lapack-3-1-1">Build lapack (3.1.1)</a></li>
+<li><a class="reference internal" href="#build-atlas-3-8-0">Build ATLAS (3.8.0)</a></li>
+<li><a class="reference internal" href="#build-umfpack-5-2-0">Build UMFPACK (5.2.0)</a></li>
+<li><a class="reference internal" href="#build-fftw-3-1-2">Build FFTW (3.1.2)</a><ul>
+<li><a class="reference internal" href="#scipy-versions-0-7-and-numpy-1-2">SciPy Versions &gt;= 0.7 and NumPy &gt;= 1.2</a></li>
+<li><a class="reference internal" href="#id2">SciPy Versions &lt; 0.7 and NumPy &lt; 1.2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#build-numpy-and-scipy">Build NumPy and SciPy</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#any-distribution-with-intel-c-compiler-and-mkl">Any distribution with Intel C compiler and MKL</a><ul>
+<li><a class="reference internal" href="#intel-mkl-11-0-updated-dec-2012">Intel MKL 11.0 (updated Dec 2012)</a></li>
+<li><a class="reference internal" href="#intel-mkl-10-0">Intel MKL 10.0</a></li>
+<li><a class="reference internal" href="#older-information">Older information</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#any-linux-distro-self-contained-local-installation-with-sage">Any Linux distro: self-contained local installation with Sage.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Search</h3>
+<form class="form-search" action="http://www.google.com/search" method="get">
+  <fieldset>
+    <!-- we'll use google at least until we get everything in sphinx -->
+    <input type="text" name="q" size="18" class="input-small search-query">
+    <button type="submit" class="btn">Go</button>
+    <input type="hidden" name="as_sitesearch" value="scipy.org">
+  </fieldset>
+</form>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container container-navbar-bottom">
+      <div class="spc-navbar">
+        
+      </div>
+    </div>
+    <div class="container">
+    <div class="footer">
+    <div class="row-fluid">
+    <ul class="inline pull-left">
+      <li>
+        &copy; Copyright 2017 SciPy developers.
+      </li>
+      <li>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.3.
+      </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>Getting Started &mdash; SciPy.org</title>
+    
+    <link rel="stylesheet" type="text/css" href="_static/css/spc-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="_static/css/spc-extend.css">
+    <link rel="stylesheet" href="_static/scipy.css" type="text/css" >
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" >
+    <link rel="stylesheet" href="_static/scipy-org.css" type="text/css" >
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/copybutton.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico">
+    <link rel="author" title="About these documents" href="about.html" >
+    <link rel="search" title="Search" href="search.html" >
+    <link rel="top" title="SciPy.org" href="index.html" >
+    <link rel="next" title="Documentation" href="docs.html" >
+    <link rel="prev" title="Installing the SciPy Stack" href="install.html" > 
+  </head>
+  <body>
+<style type="text/css">
+.top-logo-header {
+  text-align: left;
+  background-color: rgb(140, 170, 230);
+  border-bottom: 8px solid rgb(0, 51, 153);
+  margin-top: 10px;
+  padding: 5px;
+  box-shadow: 0px 0px 3px rgb(136, 136, 136);
+}
+</style>
+<div class="container">
+  <div class="top-logo-header">
+    <a href="index.html">
+      <img style="border: 0;" alt="SciPy" src="_static/logo.gif"></a>
+  </div>
+</div>
+
+    <div class="container">
+      <div class="main">
+
+
+        
+
+
+
+	<div class="row-fluid">
+          <div class="span9">
+            
+	      <div class="row-fluid">
+		<div class="span9">
+  		  <div class="spc-navbar">
+		    
+    <ul class="nav nav-pills pull-left">
+	
+        <li class="active"><a href="index.html">SciPy.org</a></li>
+	 
+    </ul>
+		  </div>
+		</div>
+	      </div>
+            
+        <div class="bodywrapper">
+          <div class="body" id="spc-section-body">
+            
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>This page is intended to help the beginner get a handle on SciPy and be
+productive with it as fast as possible.</p>
+<div class="section" id="what-are-numpy-scipy-matplotlib">
+<h2>What are NumPy, SciPy, matplotlib, ...?<a class="headerlink" href="#what-are-numpy-scipy-matplotlib" title="Permalink to this headline">¶</a></h2>
+<p>SciPy and friends can be used for a variety of tasks:</p>
+<ul class="simple">
+<li><em>NumPy</em>&#8216;s array type augments the Python language with an efficient data
+structure useful for numerical work, e.g., manipulating matrices.  <em>NumPy</em>
+also provides basic numerical routines, such as tools for finding
+eigenvectors.</li>
+<li><em>SciPy</em> contains additional routines needed in scientific work: for example,
+routines for computing integrals numerically, solving differential equations,
+optimization, and sparse matrices.</li>
+<li>The <a class="reference external" href="http://matplotlib.org/">matplotlib</a> module produces high quality plots. With it you can turn your
+data or your models into figures for presentations or articles. No need to do
+the numerical work in one program, save the data, and plot it with another
+program.</li>
+<li>Using <a class="reference external" href="http://ipython.org/">IPython</a> makes interactive work easy. Data processing, exploration of
+numerical models, trying out operations on-the-fly allows to go quickly from
+an idea to a result. See the <a class="reference external" href="http://ipython.org/">IPython site</a> for many
+examples.</li>
+<li>There is a sizeable collection of both generic and
+application-specific numerical and scientific code, written using
+Python, NumPy and SciPy. Don&#8217;t reinvent the wheel, there may already
+be a pre-made solution for your problem. See
+<a class="reference internal" href="topical-software.html"><span class="doc">Topical Software</span></a> for a partial list.</li>
+<li>As Python is a popular general-purpose programming language, it has
+many advanced modules for building for example interactive
+applications (see e.g. <a class="reference external" href="http://www.wxpython.org/">wxPython</a> and <a class="reference external" href="http://code.enthought.com/projects/traits/">Traits</a>) or web sites (see
+e.g. <a class="reference external" href="https://www.djangoproject.com/">Django</a>). Using SciPy with these is a quick way to build a
+fully-fledged scientific application.</li>
+</ul>
+</div>
+<div class="section" id="how-to-work-with-scipy">
+<h2>How to work with SciPy<a class="headerlink" href="#how-to-work-with-scipy" title="Permalink to this headline">¶</a></h2>
+<p>Python is a programming language, and there are several ways to
+approach it. There is no single program that you can start and that
+gives an integrated user experience.  Instead, there are several
+possible ways to work with Python.</p>
+<p>The most common is to use the advanced interactive Python shell
+<a class="reference external" href="http://ipython.org/">IPython</a> to enter commands and run scripts. Scripts can be written
+with any text editor, for instance <a class="reference external" href="http://www.gnu.org/software/emacs/">Emacs</a>, <a class="reference external" href="http://www.vim.org/">Vim</a> or even Notepad.  Some
+of the packages such as <em>Python(x,y)</em> mentioned in <a class="reference internal" href="install.html"><span class="doc">Installing the SciPy Stack</span></a> also
+offer an integrated scientific development environment.</p>
+<p>Neither SciPy nor NumPy provide plotting functions. There are several
+plotting packages available for Python, the most commonly used one being
+<a class="reference external" href="http://matplotlib.org/">matplotlib</a>.</p>
+</div>
+<div class="section" id="learning-to-work-with-scipy">
+<h2>Learning to work with SciPy<a class="headerlink" href="#learning-to-work-with-scipy" title="Permalink to this headline">¶</a></h2>
+<p>To learn more about the Python language, the <a class="reference external" href="http://docs.python.org/tutorial/">official Python tutorial</a> is
+an excellent way to become familiar with the Python syntax and objects.</p>
+<p>One way of getting a handle on the scientific computation tools in Python
+is to take a look at the following online resources:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.scipy-lectures.org/index.html">Python Scientific Lecture Notes</a></li>
+<li><a class="reference external" href="http://docs.scipy.org/doc/numpy-dev/user/">NumPy User Guide</a></li>
+<li><a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/tutorial/index.html">SciPy Tutorial</a>
+contains examples for each submodule in the SciPy library</li>
+<li><a class="reference external" href="http://matplotlib.org/users/beginner.html">Matplotlib beginner&#8217;s guide</a></li>
+<li><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/tutorials.html">Pandas tutorials</a></li>
+<li><a class="reference external" href="http://docs.sympy.org/latest/tutorial/">Sympy tutorial</a></li>
+</ul>
+<p>In addition, a number of books have been written on numerical
+computation in Python, see for example a
+<a class="reference external" href="http://www.google.com/search?q=scipy+scientific+python&amp;tbm=bks">Google search on books related to SciPy</a>.</p>
+<div class="section" id="an-example-session">
+<h3>An example session<a class="headerlink" href="#an-example-session" title="Permalink to this headline">¶</a></h3>
+<p>To give a simple example of typical interactive use, we find and plot
+the maximum of a Bessel function. If you have worked with numerical
+computation environments before, what follows looks very familiar.</p>
+<p>This assumes you have installed the SciPy stack, for example following
+the instructions in <a class="reference internal" href="install.html"><span class="doc">Installing the SciPy Stack</span></a>.</p>
+<div class="highlight-ipython"><div class="highlight"><pre><span></span><span class="go">$ ipython --pylab</span>
+
+<span class="go">Python 2.7.4 (default, Apr 19 2013, 18:28:01)</span>
+<span class="go">Type &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span>
+
+<span class="go">IPython 0.13.2 -- An enhanced Interactive Python.</span>
+<span class="go">?         -&gt; Introduction and overview of IPython&#39;s features.</span>
+<span class="go">%quickref -&gt; Quick reference.</span>
+<span class="go">help      -&gt; Python&#39;s own help system.</span>
+<span class="go">object?   -&gt; Details about &#39;object&#39;, use &#39;object??&#39; for extra details.</span>
+
+<span class="go">Welcome to pylab, a matplotlib-based Python environment [backend: Agg].</span>
+<span class="go">For more information, type &#39;help(pylab)&#39;.</span>
+
+<span class="gp">In [1]: </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">special</span><span class="p">,</span> <span class="n">optimize</span>
+
+<span class="gp">In [2]: </span><span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">special</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="gp">In [3]: </span><span class="n">sol</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+<span class="gp">In [4]: </span><span class="n">x</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+
+<span class="gp">In [5]: </span><span class="n">x</span>
+<span class="go">Out[5]:</span>
+<span class="go">array([  0.00000000e+00,   2.00040008e-03,   4.00080016e-03, ...,</span>
+<span class="go">         9.99599920e+00,   9.99799960e+00,   1.00000000e+01])</span>
+
+<span class="gp">In [6]: </span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">special</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">sol</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">sol</span><span class="o">.</span><span class="n">fun</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+
+<span class="gp">In [7]: </span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;plot.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">96</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/getting-started-plot.png" src="_images/getting-started-plot.png" />
+</div>
+<div class="section" id="an-example-script">
+<h3>An example script<a class="headerlink" href="#an-example-script" title="Permalink to this headline">¶</a></h3>
+<p>The above example session can be written as a non-interactive script
+as follows. Here, we don&#8217;t give the simplest example possible, but
+follow what is considered good practice on command-line scripts.</p>
+<p>Contents of a file <code class="docutils literal"><span class="pre">example.py</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;example.py</span>
+
+<span class="sd">Compute the maximum of a Bessel function and plot it.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">special</span><span class="p">,</span> <span class="n">optimize</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Parse command-line arguments</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--order&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;order of Bessel function&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;plot.png&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;output image file&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c1"># Compute maximum</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">special</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">sol</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># Plot</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">special</span><span class="o">.</span><span class="n">jv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">sol</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">sol</span><span class="o">.</span><span class="n">fun</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Produce output</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">96</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+          </div>
+      <div class="spc-rightsidebar span3">
+        <div class="sphinxsidebarwrapper">
+
+<style type="text/css">
+a.extlink:after {
+    margin-left: 5px;
+    content: url("_static/external-link.png");
+}
+</style>
+
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li >
+      <a href="about.html">About SciPy</a>
+      
+    </li>
+    <li >
+      <a href="install.html">Install</a></li>
+    <li class="active">
+      <a href="#">Getting Started</a></li>
+    <li >
+      <a href="docs.html">Documentation</a></li>
+    <li >
+      <a href="bug-report.html">Bug Reports</a></li>
+    <li >
+      <a href="topical-software.html">Topical Software</a>
+      
+    </li>
+    <li >
+      <a href="citing.html">Citing</a></li>
+    <li><a class="extlink" href="http://central.scipy.org">SciPy Central</a> 
+    <li><a class="extlink" href="http://scipy-cookbook.readthedocs.org">Cookbook</a></li>
+    <li><a class="extlink" href="http://conference.scipy.org">SciPy Conferences</a></li>
+    <li><a class="extlink" href="http://planet.scipy.org">Blogs</a></li>
+    <li><a class="extlink" href="http://numfocus.org">NumFOCUS</a></li>
+  </ul>
+</div>
+
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Core packages:</li>
+    <li><a class="extlink" href="http://www.numpy.org">Numpy</a> 
+    <li><a class="extlink" href="scipylib/index.html">SciPy library</a>
+    <li><a class="extlink" href="http://matplotlib.org">Matplotlib</a> 
+    <li><a class="extlink" href="http://ipython.org">IPython</a> 
+    <li><a class="extlink" href="http://sympy.org/">Sympy</a> 
+    <li><a class="extlink" href="http://pandas.pydata.org/">Pandas</a> 
+  </ul>
+</div>
+
+
+
+
+
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
+<li><a class="reference internal" href="#what-are-numpy-scipy-matplotlib">What are NumPy, SciPy, matplotlib, ...?</a></li>
+<li><a class="reference internal" href="#how-to-work-with-scipy">How to work with SciPy</a></li>
+<li><a class="reference internal" href="#learning-to-work-with-scipy">Learning to work with SciPy</a><ul>
+<li><a class="reference internal" href="#an-example-session">An example session</a></li>
+<li><a class="reference internal" href="#an-example-script">An example script</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Search</h3>
+<form class="form-search" action="http://www.google.com/search" method="get">
+  <fieldset>
+    <!-- we'll use google at least until we get everything in sphinx -->
+    <input type="text" name="q" size="18" class="input-small search-query">
+    <button type="submit" class="btn">Go</button>
+    <input type="hidden" name="as_sitesearch" value="scipy.org">
+  </fieldset>
+</form>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container container-navbar-bottom">
+      <div class="spc-navbar">
+        
+      </div>
+    </div>
+    <div class="container">
+    <div class="footer">
+    <div class="row-fluid">
+    <ul class="inline pull-left">
+      <li>
+        &copy; Copyright 2017 SciPy developers.
+      </li>
+      <li>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.3.
+      </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+  </body>
+</html>
